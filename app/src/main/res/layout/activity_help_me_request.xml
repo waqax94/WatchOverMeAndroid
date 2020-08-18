@@ -5,8 +5,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".activities.HelpMeRequestActivity"
-    android:background="@drawable/gradient_bg2">
+    android:background="@color/colorPlaneBG">
+
+    <TextView
+        android:id="@+id/helpMeHeaderText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:textColor="@color/colorText1"
+        android:textSize="25sp"
+        android:textAlignment="center"
+        android:fontFamily="@font/raleway_regular_italic"
+        android:text="Help me requestt will be initiated in"/>
 
     <TextView
         android:id="@+id/helpMeTimer"
@@ -14,12 +29,24 @@
         android:layout_height="wrap_content"
         android:text="10"
         android:paddingBottom="20dp"
-        android:textSize="80sp"
-        android:fontFamily="@font/raleway_light"
-        android:textColor="@android:color/white"
+        android:textSize="50sp"
+        android:fontFamily="@font/raleway_bold"
+        android:textColor="@color/colorText1"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_below="@id/helpMeHeaderText"
         />
+
+    <TextView
+        android:id="@+id/helpMeSecondText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/helpMeTimer"
+        android:textSize="25sp"
+        android:textColor="@color/colorText1"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/raleway_regular_italic"
+        android:text="second(s)..."
+        android:layout_marginBottom="30dp"/>
 
     <me.zhanghai.android.materialprogressbar.MaterialProgressBar
         android:id="@+id/helpMeProgress"
@@ -30,7 +57,29 @@
         android:minHeight="200dp"
         android:minWidth="200dp"
         style="@style/Widget.MaterialProgressBar.ProgressBar"
-        android:indeterminateTint="@android:color/white"/>
+        app:mpb_progressTint="@color/colorButtonBG2"/>
 
+    <ImageView
+        android:id="@+id/helpMeCancelButton"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/button_bg6"
+        android:src="@drawable/cancel"
+        android:padding="30dp"/>
+
+
+    <TextView
+        android:id="@+id/helpMeCancelText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/helpMeProgress"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/colorText1"
+        android:textSize="25dp"
+        android:text="Cancel Request"
+        android:fontFamily="@font/raleway_regular_italic"/>
 
 </RelativeLayout>

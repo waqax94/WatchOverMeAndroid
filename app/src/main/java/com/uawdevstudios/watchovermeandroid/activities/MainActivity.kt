@@ -72,9 +72,14 @@ class MainActivity : AppCompatActivity() {
         } else {
             mainParentLayout.visibility = View.VISIBLE
         }
+        val fragmentName = intent.extras?.get("Fragment")
 
-
-        loadHomeFragment()
+        if(fragmentName != null && fragmentName == "Notification"){
+            loadNotificationFragment()
+        }
+        else{
+            loadHomeFragment()
+        }
 
         mainNotificationTabButton.setOnClickListener {
             loadNotificationFragment()

@@ -17,6 +17,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -26,15 +27,22 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.uawdevstudios.watchovermeandroid.R
 import com.uawdevstudios.watchovermeandroid.activities.LoginActivity
 import com.uawdevstudios.watchovermeandroid.activities.MainActivity
+import com.uawdevstudios.watchovermeandroid.services.APIService
 import com.uawdevstudios.watchovermeandroid.services.CustomLocationService
+import com.uawdevstudios.watchovermeandroid.services.ServiceBuilder
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
+import kotlinx.android.synthetic.main.progress_view.view.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class ProfileFragment : Fragment(), OnMapReadyCallback {
 
     lateinit var fusedLocationClient: FusedLocationProviderClient
     lateinit var rootView: View
+    lateinit var progressDialog: AlertDialog
 
     private val mHandler: Handler = Handler(Looper.getMainLooper())
 
@@ -52,6 +60,19 @@ class ProfileFragment : Fragment(), OnMapReadyCallback {
         val loginData =
             activity?.getSharedPreferences("wearerInfo", Context.MODE_PRIVATE)
 
+        val progressDialogBuilder = AlertDialog.Builder(rootView.context)
+        val dialogView = layoutInflater.inflate(R.layout.progress_view, null)
+        dialogView.loadingText.text = "Please wait..."
+        Glide.with(rootView.context)
+            .load(R.drawable.loading)
+            .placeholder(R.drawable.loading)
+            .centerCrop()
+            .crossFade()
+            .into(dialogView.loadingIcon)
+        progressDialogBuilder.setView(dialogView)
+        progressDialogBuilder.setCancelable(false)
+        progressDialog = progressDialogBuilder.create()
+
         rootView.profileServiceId.text = loginData?.getString("serviceId", "")
         rootView.profileFirstName.text = loginData?.getString("wearerFirstName", "")
         rootView.profileLastName.text = loginData?.getString("wearerLastName","")
@@ -65,24 +86,47 @@ class ProfileFragment : Fragment(), OnMapReadyCallback {
         permissionDialog.setMessage("Are you sure?")
 
         permissionDialog.setPositiveButton("Sign Out") { dialog, which ->
-            val userData =
-                activity?.getSharedPreferences("wearerInfo", Context.MODE_PRIVATE)
-            val editor = userData?.edit()
-            if (editor != null) {
-                editor.putString("wearerId", "")
-                editor.putString("serviceId", "")
-                editor.putString("wearerFirstName", "")
-                editor.putString("wearerLastName", "")
-                editor.putString("wearerEmail", "")
-                editor.putString("wearerPhone", "")
-                editor.putString("wearerPassword", "")
-                editor.apply()
-            }
 
-            val intent = Intent(rootView.context, LoginActivity::class.java)
-            startActivity(intent)
-            stopLocationService()
-            MainActivity().onBackPressed()
+            progressDialog.show()
+            val apiService = ServiceBuilder.buildService(APIService::class.java)
+            val requestCall = apiService.setLoginStatus(loginData?.getString("serviceId", ""),"false")
+
+            requestCall.enqueue(object : Callback<String>{
+                override fun onResponse(call: Call<String>, response: Response<String>) {
+                    progressDialog.dismiss()
+
+                    if(response.body().toString() == "done"){
+                        val userData =
+                            activity?.getSharedPreferences("wearerInfo", Context.MODE_PRIVATE)
+                        val editor = userData?.edit()
+                        if (editor != null) {
+                            editor.putString("wearerId", "")
+                            editor.putString("serviceId", "")
+                            editor.putString("wearerFirstName", "")
+                            editor.putString("wearerLastName", "")
+                            editor.putString("wearerEmail", "")
+                            editor.putString("wearerPhone", "")
+                            editor.putString("wearerPassword", "")
+                            editor.apply()
+                        }
+
+                        val intent = Intent(rootView.context, LoginActivity::class.java)
+                        startActivity(intent)
+                        stopLocationService()
+                        MainActivity().onBackPressed()
+                    }
+                    else{
+                        Toast.makeText(rootView.context,"Unable to logout",Toast.LENGTH_SHORT).show()
+                    }
+
+                }
+
+                override fun onFailure(call: Call<String>, t: Throwable) {
+                    progressDialog.dismiss()
+                    Toast.makeText(rootView.context,"Connection Error",Toast.LENGTH_SHORT).show()
+                }
+
+            })
         }
 
         permissionDialog.setNegativeButton("Cancel") { dialog, which ->

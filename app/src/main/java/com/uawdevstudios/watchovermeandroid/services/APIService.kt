@@ -40,6 +40,19 @@ interface APIService {
     ): Call<ServerResponse>
 
     @FormUrlEncoded
+    @POST("setLoginStatus")
+    fun setLoginStatus(
+        @Field("serviceId") serviceId: String?,
+        @Field("status") status: String?
+    ): Call<String>
+
+    @FormUrlEncoded
+    @POST("checkLoginStatus")
+    fun checkLoginStatus(
+        @Field("serviceId") serviceId: String?
+    ): Call<String>
+
+    @FormUrlEncoded
     @POST("getWatchers")
     fun getWatchers(@Field("serviceId") serviceId: String?): Call<ServerResponse>
 
@@ -56,6 +69,11 @@ interface APIService {
         @Field("serviceId") serviceId: String?
     ): Call<String>
 
+    @FormUrlEncoded
+    @POST("deactivateHelpMeRequest")
+    fun deactivateHelpMeRequest(
+        @Field("serviceId") serviceId: String?
+    ): Call<String>
 
     @FormUrlEncoded
     @POST("helpMeRequestInitiate")

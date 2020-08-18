@@ -138,7 +138,9 @@ class LoginActivity : AppCompatActivity() {
                 if (loginPassword.text.toString() != "") {
 
                     progressDialog.show()
+
                     val apiService: APIService = ServiceBuilder.buildService(APIService::class.java)
+
                     val requestCall: Call<ServerResponse> = apiService.loginProcessing(
                         loginCCP.fullNumberWithPlus,
                         loginPassword.text.toString()
@@ -150,7 +152,6 @@ class LoginActivity : AppCompatActivity() {
                             call: Call<ServerResponse>,
                             response: Response<ServerResponse>
                         ) {
-                            progressDialog.hide()
                             if (response.body() != null) {
                                 val serverResponse: ServerResponse? = response.body()
 
@@ -161,29 +162,59 @@ class LoginActivity : AppCompatActivity() {
                                     val wearer: Wearer =
                                         Gson().fromJson(serverResponse.data.toString(), wearerType)
 
-                                    val userData =
-                                        getSharedPreferences("wearerInfo", Context.MODE_PRIVATE)
-                                    val editor = userData.edit()
-                                    editor.putString("wearerId", wearer.wearerId)
-                                    editor.putString("serviceId", wearer.serviceId)
-                                    editor.putString("wearerFirstName", wearer.wearerFirstName)
-                                    editor.putString("wearerLastName", wearer.wearerLastName)
-                                    editor.putString("wearerEmail", wearer.wearerEmail)
-                                    editor.putString("wearerPhone", wearer.wearerPhone)
-                                    editor.putString(
-                                        "wearerPassword",
-                                        loginPassword.text.toString()
-                                    )
-                                    editor.apply()
-                                    updateTokenOnServer()
-                                    val intent = Intent(baseContext, MainActivity::class.java)
-                                    startActivity(intent)
+                                    val requestCall2 = apiService.checkLoginStatus(wearer.serviceId)
+
+                                    requestCall2.enqueue(object : Callback<String> {
+                                        override fun onResponse(
+                                            call: Call<String>,
+                                            response: Response<String>
+                                        ) {
+                                            progressDialog.hide()
+                                            Log.d("Login", response.body().toString())
+                                            if(response.body().toString() != "true"){
+
+                                                setLoginStatus(wearer.serviceId)
+                                                val userData =
+                                                    getSharedPreferences("wearerInfo", Context.MODE_PRIVATE)
+                                                val editor = userData.edit()
+                                                editor.putString("wearerId", wearer.wearerId)
+                                                editor.putString("serviceId", wearer.serviceId)
+                                                editor.putString("wearerFirstName", wearer.wearerFirstName)
+                                                editor.putString("wearerLastName", wearer.wearerLastName)
+                                                editor.putString("wearerEmail", wearer.wearerEmail)
+                                                editor.putString("wearerPhone", wearer.wearerPhone)
+                                                editor.putString(
+                                                    "wearerPassword",
+                                                    loginPassword.text.toString()
+                                                )
+                                                editor.apply()
+                                                updateTokenOnServer()
+                                                val intent = Intent(baseContext, MainActivity::class.java)
+                                                startActivity(intent)
+                                            }
+                                            else{
+                                                loginErrorMessage.text = "Service already logged in"
+                                                loginErrorLayout.visibility = View.VISIBLE
+                                            }
+                                        }
+
+                                        override fun onFailure(call: Call<String>, t: Throwable) {
+                                            progressDialog.hide()
+                                            Toast.makeText(applicationContext, "No Connection", Toast.LENGTH_SHORT)
+                                                .show()
+                                        }
+
+                                    })
+
+
                                 } else {
+                                    progressDialog.hide()
                                     loginErrorMessage.text = serverResponse.message
                                     loginErrorLayout.visibility = View.VISIBLE
                                 }
 
                             } else {
+                                progressDialog.hide()
                                 Toast.makeText(
                                     applicationContext,
                                     "Server error",
@@ -292,6 +323,22 @@ class LoginActivity : AppCompatActivity() {
             })
 
         }
+    }
+
+    fun setLoginStatus(serviceId: String?){
+        val apiService = ServiceBuilder.buildService(APIService::class.java)
+        val request = apiService.setLoginStatus(serviceId,"true")
+
+        request.enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+
+            }
+
+        })
     }
 
 }

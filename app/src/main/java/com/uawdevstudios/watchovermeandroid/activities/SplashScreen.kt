@@ -77,23 +77,40 @@ class SplashScreen : AppCompatActivity() {
                 val serverResponse = response.body()
                 if (serverResponse != null) {
                     if (serverResponse.connection == true && serverResponse.queryStatus == true) {
+
                         val wearerType = object : TypeToken<Wearer>() {}.type
 
                         val wearer: Wearer =
                             Gson().fromJson(serverResponse.data.toString(), wearerType)
 
-                        val userData =
-                            getSharedPreferences("wearerInfo", Context.MODE_PRIVATE)
-                        val editor = userData.edit()
-                        editor.putString("wearerId", wearer.wearerId)
-                        editor.putString("serviceId", wearer.serviceId)
-                        editor.putString("wearerFirstName", wearer.wearerFirstName)
-                        editor.putString("wearerLastName", wearer.wearerLastName)
-                        editor.putString("wearerEmail", wearer.wearerEmail)
-                        editor.putString("wearerPhone", wearer.wearerPhone)
-                        editor.putString("wearerPassword", wearerPassword)
-                        editor.apply()
-                        presentActivity(splashScreenIcon, MainActivity::class.java)
+                        val requestCall2 = apiService.setLoginStatus(wearer.serviceId,"true")
+
+                        requestCall2.enqueue(object : Callback<String>{
+                            override fun onResponse(
+                                call: Call<String>,
+                                response: Response<String>
+                            ) {
+                                val userData =
+                                    getSharedPreferences("wearerInfo", Context.MODE_PRIVATE)
+                                val editor = userData.edit()
+                                editor.putString("wearerId", wearer.wearerId)
+                                editor.putString("serviceId", wearer.serviceId)
+                                editor.putString("wearerFirstName", wearer.wearerFirstName)
+                                editor.putString("wearerLastName", wearer.wearerLastName)
+                                editor.putString("wearerEmail", wearer.wearerEmail)
+                                editor.putString("wearerPhone", wearer.wearerPhone)
+                                editor.putString("wearerPassword", wearerPassword)
+                                editor.apply()
+                                presentActivity(splashScreenIcon, MainActivity::class.java)
+                            }
+
+                            override fun onFailure(call: Call<String>, t: Throwable) {
+                                val intent = Intent(baseContext, NoConnectionActivity::class.java)
+                                startActivity(intent)
+                            }
+
+                        })
+
                     } else {
                         presentActivity(splashScreenIcon, LoginActivity::class.java)
                     }

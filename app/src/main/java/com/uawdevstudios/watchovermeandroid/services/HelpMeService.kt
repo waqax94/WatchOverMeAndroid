@@ -86,6 +86,21 @@ class HelpMeService : Service() {
         return START_NOT_STICKY
     }
 
+    override fun onDestroy() {
+        val requestCall = apiService.deactivateHelpMeRequest(serviceId)
+
+        requestCall.enqueue(object : Callback<String>{
+            override fun onFailure(call: Call<String>, t: Throwable) {
+
+            }
+
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+
+            }
+
+        })
+    }
+
     fun loadWatchers() {
         val requestCall = apiService.getWatchers(serviceId)
 

@@ -85,24 +85,14 @@ class HomeFragment : Fragment() {
 
         rootView.homeHelpMeButton.setOnClickListener {
 
-            val intent = Intent(rootView.context,HelpMeRequestActivity::class.java)
-            startActivity(intent)
-
-//            val apiService = ServiceBuilder.buildService(APIService::class.java)
-//            val requestCall = apiService.verifyHelpMeRequest(serviceId)
-//
-//            requestCall.enqueue(object : Callback<String> {
-//
-//                override fun onResponse(call: Call<String>, response: Response<String>) {
-//                    Toast.makeText(rootView.context, response.body(), Toast.LENGTH_SHORT).show()
-//                }
-//
-//                override fun onFailure(call: Call<String>, t: Throwable) {
-//                    Toast.makeText(rootView.context, "Error", Toast.LENGTH_SHORT).show()
-//                }
-//
-//            })
-//            startHelpMeService()
+            if(isHelpMeServiceRunning()){
+                stoptHelpMeService()
+            }
+            else{
+                val intent = Intent(rootView.context, HelpMeRequestActivity::class.java)
+                startActivity(intent)
+                activity?.finish()
+            }
         }
 
         return rootView
@@ -178,20 +168,15 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun startHelpMeService() {
-        if (!isLocationServiceRunning()) {
+    private fun stoptHelpMeService() {
+        if (isHelpMeServiceRunning()) {
             val serviceIntent = Intent(rootView.context, HelpMeService::class.java)
-
             serviceIntent.action = 2.toString()
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                activity?.startForegroundService(serviceIntent)
-            } else {
-                activity?.startService(serviceIntent)
-            }
+            activity?.stopService(serviceIntent)
         }
     }
 
-    private fun isLocationServiceRunning(): Boolean {
+    private fun isHelpMeServiceRunning(): Boolean {
         val manager =
             activity?.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         for (service in manager.getRunningServices(Int.MAX_VALUE)) {
