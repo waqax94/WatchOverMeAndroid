@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/profileMainLayout"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.ProfileFragment"
+    android:layout_margin="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/profileMapContainer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <com.google.android.gms.maps.MapView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/mapView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/profileDetailLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/plane_bg4"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/profileServiceIdLayout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="2dp"
+                android:layout_weight="2.5">
+
+                <TextView
+                    android:id="@+id/profileServiceIdLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorText2"
+                    android:textSize="12sp"
+                    android:text="Service ID:"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/raleway_light"/>
+
+                <TextView
+                    android:id="@+id/profileServiceId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorText1"
+                    android:textSize="24sp"
+                    android:text="WOM001"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/raleway_regular_italic"
+                    android:layout_below="@id/profileServiceIdLabel"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/profileNameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="2dp"
+                android:layout_weight="2">
+
+                <TextView
+                    android:id="@+id/profileFirstName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="30sp"
+                    android:text="Waqas"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/raleway_regular_italic"/>
+
+                <TextView
+                    android:id="@+id/profileLastName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/profileFirstName"
+                    android:textSize="30sp"
+                    android:textAllCaps="true"
+                    android:text="Waheed"
+                    android:fontFamily="@font/raleway_bold"
+                    android:layout_marginStart="5dp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/profileEmailLayout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:layout_margin="2dp">
+
+                <ImageView
+                    android:id="@+id/profileEmailIcon"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:padding="5dp"
+                    android:layout_marginStart="5dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/email"/>
+
+                <TextView
+                    android:id="@+id/profileEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:layout_toEndOf="@id/profileEmailIcon"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/colorText2"
+                    android:fontFamily="@font/raleway_regular"
+                    android:text="waqax94@gmail.com"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:layout_margin="2dp">
+
+                <ImageView
+                    android:id="@+id/profilePhoneIcon"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:padding="5dp"
+                    android:layout_marginStart="5dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/phone"/>
+
+                <TextView
+                    android:id="@+id/profilePhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:textSize="20sp"
+                    android:layout_toEndOf="@id/profilePhoneIcon"
+                    android:textColor="@color/colorText2"
+                    android:fontFamily="@font/raleway_regular_italic"
+                    android:text="+61435533452"/>
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/profileSignOutLayout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="2dp"
+                android:layout_weight="2">
+
+                <Button
+                    android:id="@+id/profileSignOutButton"
+                    android:layout_width="120dp"
+                    android:layout_height="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:text="Sign Out"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorButtonBG2"
+                    android:fontFamily="@font/raleway_bold"
+                    android:background="@drawable/button_bg4"/>
+
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

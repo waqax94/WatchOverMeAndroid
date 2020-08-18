@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "247635481508",
+    "firebase_url": "https://watch-over-me-167eb.firebaseio.com",
+    "project_id": "watch-over-me-167eb",
+    "storage_bucket": "watch-over-me-167eb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:247635481508:android:a22476dec532f921f5e731",
+        "android_client_info": {
+          "package_name": "com.uawdevstudios.watchovermeandroid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "247635481508-ot7jluq88hktfg4jogjdergljng7c6us.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsRCdG4-M9bLsPBeqO7FjekgSCaHz0nLo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "247635481508-ot7jluq88hktfg4jogjdergljng7c6us.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

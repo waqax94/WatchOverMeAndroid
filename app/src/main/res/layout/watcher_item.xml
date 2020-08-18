@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipToPadding="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="3dp">
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:clipToPadding="true"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp">
+        
+        <TextView
+            android:id="@+id/watcherPriority"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorText1"
+            android:text="1"
+            android:textStyle="bold"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:textAlignment="center"
+            android:textSize="30sp"/>
+
+        <TextView
+            android:id="@+id/watcherName"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginBottom="5dp"
+            android:layout_toStartOf="@id/watcherCallButton"
+            android:layout_toEndOf="@id/watcherPriority"
+            android:textColor="@color/colorText1"
+            android:fontFamily="@font/raleway_regular_italic"
+            android:text="Waqas Waheed"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/watcherContact"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_toEndOf="@id/watcherPriority"
+            android:layout_below="@id/watcherName"
+            android:textColor="@color/colorText1"
+            android:fontFamily="@font/raleway_regular"
+            android:text="+61 435 533 452"
+            android:textSize="18sp"
+            android:layout_toStartOf="@id/watcherCallButton"
+            android:background="@android:color/transparent"/>
+
+        <ImageButton
+            android:id="@+id/watcherCallButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/button_bg3"
+            android:src="@drawable/call"/>
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

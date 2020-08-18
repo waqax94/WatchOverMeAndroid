@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.HomeFragment"
+    android:layout_margin="5dp">
+
+    <Button
+        android:id="@+id/homeHelpMeButton"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:text="Help ME !"
+        android:fontFamily="@font/raleway_regular_italic"
+        android:textSize="35dp"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/button_bg2"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/homeHeaderLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/plane_bg3">
+
+            <TextView
+                android:id="@+id/homeGreetingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:textSize="25dp"
+                android:fontFamily="@font/raleway_regular"
+                android:text="Good morning,"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/homeWearerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:textSize="30dp"
+                android:fontFamily="@font/raleway_bold"
+                android:layout_below="@id/homeGreetingText"
+                android:text="Waqas Waheed"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/homeServiceId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:textSize="25dp"
+                android:fontFamily="@font/raleway_regular_italic"
+                android:layout_below="@id/homeWearerName"
+                android:textColor="@android:color/white"
+                android:text="SVC-12"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/homeBodyLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/plane_bg4"
+            android:paddingTop="60dp">
+
+            <include layout="@layout/content_fragment_home"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

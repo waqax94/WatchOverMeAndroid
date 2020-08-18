@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/loginParentLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_bg2"
+    android:fitsSystemWindows="true"
+    tools:context=".activities.LoginActivity">
+
+
+    <ImageView
+        android:id="@+id/loginAppIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/womicon"
+        android:transitionName="AppIconTransition" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/loginScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true">
+
+            <RelativeLayout
+                android:id="@+id/loginMainLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/loginIcon"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/plane_bg1"
+                    android:elevation="10dp"
+                    android:padding="10dp"
+                    android:src="@drawable/login" />
+
+                <RelativeLayout
+                    android:id="@+id/loginFormLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/plane_bg2">
+
+                    <TextView
+                        android:id="@+id/loginTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="50dp"
+                        android:text="Login"
+                        android:fontFamily="@font/raleway_regular_italic"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="30dp" />
+
+                    <RelativeLayout
+                        android:id="@+id/loginErrorLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@id/loginTitle"
+                        android:layout_marginTop="5dp"
+                        android:visibility="invisible">
+
+                        <ImageView
+                            android:id="@+id/loginErrorIcon"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/error"
+                            android:layout_marginEnd="5dp"/>
+
+                        <TextView
+                            android:id="@+id/loginErrorMessage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/loginErrorIcon"
+                            android:layout_centerVertical="true"
+                            android:textSize="15sp"
+                            android:fontFamily="@font/raleway_regular_italic"
+                            android:textColor="@color/colorText1"
+                            android:text="Error"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/loginPhoneLayout"
+                        android:layout_width="270dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/loginTitle"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="40dp">
+
+                        <com.hbb20.CountryCodePicker
+                            android:id="@+id/loginCCP"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:background="@drawable/textfield_bg1"
+                            app:ccp_autoDetectCountry="true"
+                            app:ccp_autoFormatNumber="true"
+                            app:ccp_countryAutoDetectionPref="LOCALE_SIM_NETWORK"
+                            app:ccp_hintExampleNumberType="MOBILE"
+                            app:ccp_showFlag="false"
+                            app:ccp_showFullName="false"
+                            app:ccp_showNameCode="false"
+                            app:ccp_showArrow="false"
+                            app:ccp_showPhoneCode="true"
+                            app:ccp_contentColor="@color/colorAccent"/>
+
+                        <EditText
+                            android:id="@+id/loginPhone"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_toRightOf="@id/loginCCP"
+                            android:background="@drawable/textfield_bg1"
+                            android:hint="Phone"
+                            android:imeOptions="actionNext"
+                            android:inputType="phone"
+                            android:maxLength="15"
+                            android:fontFamily="@font/raleway_regular_italic"
+                            android:nextFocusDown="@id/loginPassword"
+                            android:textColor="@color/colorAccent"
+                            android:textColorHint="@color/colorPrimaryDark" />
+
+                    </RelativeLayout>
+
+                    <EditText
+                        android:id="@+id/loginPassword"
+                        android:layout_width="270dp"
+                        android:layout_height="40dp"
+                        android:layout_below="@id/loginPhoneLayout"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="30dp"
+                        android:background="@drawable/textfield_bg1"
+                        android:drawableLeft="@drawable/password"
+                        android:hint="Password"
+                        android:fontFamily="@font/raleway_regular_italic"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPassword"
+                        android:drawablePadding="8dp"
+                        android:paddingStart="10dp"
+                        android:textColor="@color/colorAccent"
+                        android:textColorHint="@color/colorPrimaryDark" />
+
+
+                    <Button
+                        android:id="@+id/loginButton"
+                        android:layout_width="150dp"
+                        android:layout_height="40dp"
+                        android:layout_below="@id/loginPassword"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="60dp"
+                        android:layout_marginBottom="60dp"
+                        android:background="@drawable/button_bg1"
+                        android:text="Sign in"
+                        android:fontFamily="@font/raleway_bold"
+                        android:textColor="@android:color/white" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </RelativeLayout>
+
+</RelativeLayout>

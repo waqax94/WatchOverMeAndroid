@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".activities.NoConnectionActivity"
+    android:background="@drawable/gradient_bg">
+
+    <TextView
+        android:id="@+id/noConnectionHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:textSize="30sp"
+        android:textAlignment="center"
+        android:layout_centerHorizontal="true"
+        android:text="No Internet Connection!"
+        android:textColor="@android:color/white"
+        android:fontFamily="@font/raleway_light"
+        android:layout_above="@id/noConnectionIcon"/>
+
+    <ImageView
+        android:id="@+id/noConnectionIcon"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/no_connection"/>
+
+    <Button
+        android:id="@+id/noConnectionButton"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:text="Try Again"
+        android:textColor="@android:color/white"
+        android:fontFamily="@font/raleway_regular_italic"
+        android:elevation="10dp"
+        android:background="@drawable/button_bg5"/>
+
+</RelativeLayout>

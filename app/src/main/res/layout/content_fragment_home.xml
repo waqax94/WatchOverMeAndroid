@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/homeBodyLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/plane_bg4"
+    android:gravity="end"
+    android:layout_margin="5dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:id="@+id/homeClockLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/homeClockIcon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/homeClock"
+            android:src="@drawable/clock" />
+
+        <TextClock
+            android:id="@+id/homeClock"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginEnd="5dp"
+            android:layout_centerVertical="true"
+            android:format12Hour="hh:mm:ss a"
+            android:textColor="@color/colorText1"
+            android:textSize="20dp"
+            android:fontFamily="@font/raleway_bold"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/homeDateLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+
+        <ImageView
+            android:id="@+id/homeDatekIcon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/homeDate"
+            android:src="@drawable/date"/>
+
+        <TextClock
+            android:id="@+id/homeDate"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginEnd="5dp"
+            android:layout_centerVertical="true"
+            android:format12Hour="dd MMMM yyyy"
+            android:textColor="@color/colorText1"
+            android:textSize="20dp"
+            android:fontFamily="@font/raleway_regular_italic"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/homeBatteryLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+
+        <ImageView
+            android:id="@+id/homeBatteryIcon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/homeBattery"
+            android:src="@drawable/battery"/>
+
+        <TextView
+            android:id="@+id/homeBattery"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginEnd="5dp"
+            android:format12Hour="hh:mm:ss a"
+            android:text="50% remaining"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorText1"
+            android:textSize="20dp"
+            android:fontFamily="@font/raleway_regular_italic"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/homeLocationLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+
+        <ImageView
+            android:id="@+id/homeLocationIcon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/homeLocation"
+            android:src="@drawable/location"/>
+
+        <TextView
+            android:id="@+id/homeLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:maxWidth="200dp"
+            android:layout_marginEnd="5dp"
+            android:format12Hour="hh:mm:ss"
+            android:text="Location"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorText1"
+            android:textSize="20dp"
+            android:fontFamily="@font/raleway_regular_italic"/>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/notificationItemParentLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="3dp">
+
+    <RelativeLayout
+        android:id="@+id/notificationItemMainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/notificationItemText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="30dp"
+            android:text="Rad Williams,The HelpMe Watch team is now contacting Iffat Khan for you my SMS, Email and phone. They are number 1 of 4 possible responding watchers for you. We will contact all of your Responding Watchers in sequence and keep you informed of the progress."
+            android:textSize="18dp"
+            android:layout_margin="5dp"
+            android:lineSpacingExtra="5dp"
+            android:fontFamily="@font/raleway_regular_italic"
+            android:textColor="@color/colorText1"/>
+        
+        <TextView
+            android:id="@+id/notificationItemTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/notificationItemText"
+            android:layout_alignParentEnd="true"
+            android:textSize="15dp"
+            android:text="10:20:36 am"
+            android:layout_margin="5dp"
+            android:fontFamily="@font/raleway_bold"
+            android:textColor="@color/colorPrimaryDark"/>
+
+        <View
+            android:id="@+id/notificationItemTimeSeparator"
+            android:layout_width="2dp"
+            android:layout_height="20dp"
+            android:background="@color/colorAccent"
+            android:layout_margin="5dp"
+            android:layout_toStartOf="@id/notificationItemTime"
+            android:layout_below="@id/notificationItemText"/>
+
+        <TextView
+            android:id="@+id/notificationItemDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/notificationItemText"
+            android:layout_toStartOf="@id/notificationItemTimeSeparator"
+            android:text="11 January 2020"
+            android:textSize="15dp"
+            android:layout_margin="5dp"
+            android:fontFamily="@font/raleway_regular_italic"
+            android:textColor="@color/colorPrimaryDark"
+            />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
