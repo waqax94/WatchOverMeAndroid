@@ -11,11 +11,18 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.uawdevstudios.watchovermeandroid.R
 import com.uawdevstudios.watchovermeandroid.activities.MainActivity
+import com.uawdevstudios.watchovermeandroid.models.NotificationItem
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
 
 class FirebaseNotificationService : FirebaseMessagingService() {
+
+    val dateFormatter = SimpleDateFormat("dd MMMM yyyy")
+    val timeFormatter = SimpleDateFormat("hh:mm:ss aa")
+
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
@@ -55,14 +62,22 @@ class FirebaseNotificationService : FirebaseMessagingService() {
 
         val builder = NotificationCompat.Builder(this)
             .setAutoCancel(true)
-            .setContentTitle(message.notification?.title)
-            .setContentText(message.data["message"])
+            .setContentTitle(message.data["title"])
+            .setContentText(message.data["body"])
             .setSmallIcon(R.drawable.app_notification_icon)
             .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL)
             .setContentIntent(pendingIntent)
 
+        val timeNow = Calendar.getInstance().time
+
+        val notification = NotificationItem(message.data["body"].toString(),dateFormatter.format(timeNow),timeFormatter.format(timeNow))
+
+        FileService(this).saveNotification(notification)
+
         val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         manager.notify(0,builder.build())
+
+        sendBroadcast(Intent().setAction("NewNotification"))
     }
 
 }

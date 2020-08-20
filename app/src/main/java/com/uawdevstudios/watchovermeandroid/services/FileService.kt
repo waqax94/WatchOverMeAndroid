@@ -55,6 +55,14 @@ class FileService(context: Context) {
         return ArrayList<NotificationItem>()
     }
 
+    fun saveNotification(newNotification: NotificationItem){
+        var notifications = ArrayList<NotificationItem>()
+
+        notifications = loadFromFile()
+        notifications.add(newNotification)
+        writeToFile(notifications)
+
+    }
 
     companion object {
         val FILE_NAME = "notifications.json"

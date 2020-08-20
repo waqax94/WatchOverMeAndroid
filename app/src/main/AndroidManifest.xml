@@ -20,14 +20,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDwXBxaCCsrD98pkkixfhwek9goF3IV9MI" />
+
         <service
             android:name=".services.HelpMeService"
             android:enabled="true"
             android:exported="true" />
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDwXBxaCCsrD98pkkixfhwek9goF3IV9MI" />
 
         <service
             android:name=".services.CustomLocationService"

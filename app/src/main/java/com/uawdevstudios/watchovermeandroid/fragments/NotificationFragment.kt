@@ -1,6 +1,9 @@
 package com.uawdevstudios.watchovermeandroid.fragments
 
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
 import android.util.JsonReader
@@ -32,6 +35,7 @@ class NotificationFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        activity?.registerReceiver(this.broadcastReceiver, IntentFilter("NewNotification"))
     }
 
     override fun onCreateView(
@@ -40,33 +44,31 @@ class NotificationFragment : Fragment() {
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_notification, container, false)
 
-
-
-//        FileService(rootView.context).writeToFile(notificationList)
-
         loadNotifications(rootView.context)
-//        popNotificationItems()
-//        notificationList = FileService(rootView.context).loadFromFile()
-//        sortList()
         rootView.notificationRecyclerView.adapter = notificationAdapter
 
-//        notificationList = FileService(rootView.context).loadFromFile()
 
         Log.d(
             "Read File Content",
             "JSON: " + notificationList.toString()
         )
 
-
-        //popNotificationItems()
         rootView.notificationRecyclerView.layoutManager = LinearLayoutManager(this.context)
         rootView.notificationRecyclerView.setHasFixedSize(true)
 
         return rootView
     }
 
+    val broadcastReceiver = object: BroadcastReceiver(){
+        override fun onReceive(context: Context?, intent: Intent?) {
+            loadNotifications(context!!)
+        }
+
+    }
+
     fun loadNotifications(context: Context) {
 
+        notificationList.clear()
         val newNotificationItems = FileService(context).loadFromFile()
         for (i in 0..newNotificationItems.size-1){
             notificationList.add(newNotificationItems.get(i))
@@ -94,6 +96,11 @@ class NotificationFragment : Fragment() {
 
         notificationAdapter.notifyDataSetChanged()
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        activity?.unregisterReceiver(this.broadcastReceiver)
     }
 
 

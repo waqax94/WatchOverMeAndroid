@@ -3,6 +3,7 @@ package com.uawdevstudios.watchovermeandroid.fragments
 import android.Manifest
 import android.app.ActivityManager
 import android.app.AlertDialog
+import android.app.Notification
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -27,8 +28,10 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.uawdevstudios.watchovermeandroid.R
 import com.uawdevstudios.watchovermeandroid.activities.LoginActivity
 import com.uawdevstudios.watchovermeandroid.activities.MainActivity
+import com.uawdevstudios.watchovermeandroid.models.NotificationItem
 import com.uawdevstudios.watchovermeandroid.services.APIService
 import com.uawdevstudios.watchovermeandroid.services.CustomLocationService
+import com.uawdevstudios.watchovermeandroid.services.FileService
 import com.uawdevstudios.watchovermeandroid.services.ServiceBuilder
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
@@ -93,7 +96,6 @@ class ProfileFragment : Fragment(), OnMapReadyCallback {
 
             requestCall.enqueue(object : Callback<String>{
                 override fun onResponse(call: Call<String>, response: Response<String>) {
-                    progressDialog.dismiss()
 
                     if(response.body().toString() == "done"){
                         val userData =
@@ -112,10 +114,13 @@ class ProfileFragment : Fragment(), OnMapReadyCallback {
 
                         val intent = Intent(rootView.context, LoginActivity::class.java)
                         startActivity(intent)
+                        FileService(rootView.context).writeToFile(ArrayList<NotificationItem>())
                         stopLocationService()
                         MainActivity().onBackPressed()
+                        progressDialog.dismiss()
                     }
                     else{
+                        progressDialog.dismiss()
                         Toast.makeText(rootView.context,"Unable to logout",Toast.LENGTH_SHORT).show()
                     }
 
