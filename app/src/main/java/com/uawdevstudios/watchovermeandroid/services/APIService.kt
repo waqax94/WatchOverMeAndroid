@@ -63,11 +63,6 @@ interface APIService {
         @Field("deviceToken") deviceToken: String?
     ): Call<String>
 
-    @FormUrlEncoded
-    @POST("verifyHelpMeRequest")
-    fun verifyHelpMeRequest(
-        @Field("serviceId") serviceId: String?
-    ): Call<String>
 
     @FormUrlEncoded
     @POST("deactivateHelpMeRequest")
@@ -88,4 +83,16 @@ interface APIService {
         @Field("serviceId") serviceId: String?
     ): Call<ServerResponse>
 
+    @FormUrlEncoded
+    @POST("regularLog")
+    fun regularLog(
+        @Field("batteryLevel") batteryLevel: String?,
+        @Field("locationLatitude") locationLatitude: String?,
+        @Field("locationLongitude") locationLongitude: String?,
+        @Field("logText") logText: String?,
+        @Field("logDate") logDate: String?,
+        @Field("logTime") logTime: String?,
+        @Field("logType") logType: String?,
+        @Field("serviceId") serviceId: String?
+    ): Call<String>
 }

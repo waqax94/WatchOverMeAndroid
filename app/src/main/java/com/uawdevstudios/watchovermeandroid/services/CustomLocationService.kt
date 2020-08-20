@@ -5,9 +5,12 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.os.BatteryManager
 import android.os.Build
 import android.os.IBinder
 import android.os.Looper
@@ -15,11 +18,21 @@ import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import com.google.android.gms.location.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class CustomLocationService : Service() {
     private var mFusedLocationClient: FusedLocationProviderClient? = null
     private lateinit var locationCallback: LocationCallback
+    var batteryLevel: String? = null
+    var serviceId: String? = null
+    lateinit var broadcastReceiver: BroadcastReceiver
+    val dateFormatter = SimpleDateFormat("dd MMMM yyyy")
+    val timeFormatter = SimpleDateFormat("hh:mm:ss aa")
 
     override fun onBind(intent: Intent): IBinder? {
         return null
@@ -27,12 +40,27 @@ class CustomLocationService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+        val loginData =
+            getSharedPreferences("wearerInfo", Context.MODE_PRIVATE)
+        serviceId = loginData?.getString("serviceId", "")
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        broadcastReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                batteryLevel = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0).toString()
+            }
+        }
+
+        registerReceiver(
+            broadcastReceiver,
+            IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+        )
+
         if (Build.VERSION.SDK_INT >= 26) {
-            val CHANNEL_ID = "my_channel_01"
+            val CHANNEL_ID = "watch_over_me"
             val channel = NotificationChannel(
                 CHANNEL_ID,
-                "My Channel",
+                "Watch Over Me",
                 NotificationManager.IMPORTANCE_DEFAULT
             )
             (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(
@@ -82,6 +110,9 @@ class CustomLocationService : Service() {
 
             locationCallback = object : LocationCallback() {
                 override fun onLocationResult(locationResult: LocationResult) {
+
+                    val timeNow = Calendar.getInstance().time
+
                     Log.d(
                         TAG,
                         "onLocationResult: got location result."
@@ -92,6 +123,35 @@ class CustomLocationService : Service() {
                             TAG,
                             "Latitude: " + location.latitude
                         )
+
+                        FileService(this@CustomLocationService).removeNotifications()
+
+                        val apiService = ServiceBuilder.buildService(APIService::class.java)
+                        val requestCall = apiService.regularLog(
+                            batteryLevel,
+                            location.latitude.toString(),
+                            location.longitude.toString(),
+                            "Regularly timed log",
+                            dateFormatter.format(timeNow),
+                            timeFormatter.format(timeNow),
+                            "Regular Log",
+                            serviceId
+                        )
+
+                        requestCall.enqueue(object : Callback<String> {
+                            override fun onResponse(
+                                call: Call<String>,
+                                response: Response<String>
+                            ) {
+                                Log.d("Regular Log Response", response.body().toString())
+                            }
+
+                            override fun onFailure(call: Call<String>, t: Throwable) {
+                                Log.d("Regular Log Response", "Error")
+                            }
+
+                        })
+
                     }
                 }
             }
@@ -104,10 +164,14 @@ class CustomLocationService : Service() {
         }
 
     override fun onDestroy() {
-        try{
+        try {
             mFusedLocationClient?.removeLocationUpdates(locationCallback)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-        catch(e: Exception){
+        try {
+            unregisterReceiver(broadcastReceiver)
+        } catch (e: Exception) {
             e.printStackTrace()
         }
         Log.d("Service Destroy", "Service Destroyed")
@@ -116,7 +180,7 @@ class CustomLocationService : Service() {
 
     companion object {
         private const val TAG = "LocationService"
-        private const val UPDATE_INTERVAL = 4 * 1000 /* 4 secs */.toLong()
+        private const val UPDATE_INTERVAL = 30 * 60 * 1000.toLong()
         private const val FASTEST_INTERVAL: Long = 2000 /* 2 sec */
     }
 }

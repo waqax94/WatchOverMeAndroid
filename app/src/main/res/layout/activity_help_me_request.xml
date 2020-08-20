@@ -22,7 +22,7 @@
         android:autoSizeTextType="uniform"
         android:fontFamily="@font/raleway_regular_italic"
         android:gravity="center"
-        android:text="Help me requestt will be initiated in"
+        android:text="Help me request will be initiated in"
         android:textAlignment="center"
         android:textColor="@color/colorText1" />
 

@@ -9,9 +9,13 @@ import com.uawdevstudios.watchovermeandroid.models.NotificationItem
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class FileService(context: Context) {
 
+    private val formatter = SimpleDateFormat("dd MMMM yyyy hh:mm:ss aa")
     private val gsonPretty = GsonBuilder().setPrettyPrinting().create()
     private val filePath = context.getDir("notifications", Context.MODE_PRIVATE)
     private var file = File(filePath, FILE_NAME)
@@ -62,6 +66,22 @@ class FileService(context: Context) {
         notifications.add(newNotification)
         writeToFile(notifications)
 
+    }
+
+    fun removeNotifications(){
+        var notificationList = ArrayList<NotificationItem>()
+        notificationList = loadFromFile()
+
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.HOUR_OF_DAY, -12)
+        val timeNow = calendar.time
+        for (i in notificationList.size - 1 downTo 0) {
+            val notificationTimeStamp =
+                formatter.parse(notificationList[i].notificationDate + " " + notificationList[i].notificationTime)
+            if (notificationTimeStamp!!.before(timeNow)) {
+                notificationList.removeAt(i)
+            }
+        }
     }
 
     companion object {

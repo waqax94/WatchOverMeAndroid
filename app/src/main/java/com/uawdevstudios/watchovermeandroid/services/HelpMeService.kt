@@ -54,7 +54,6 @@ class HelpMeService : Service() {
     var cycle = 0
     val dateFormatter = SimpleDateFormat("dd MMMM yyyy")
     val timeFormatter = SimpleDateFormat("hh:mm:ss aa")
-    val calendar = Calendar.getInstance()
     val handler = Handler()
 
     override fun onBind(intent: Intent): IBinder? {
@@ -82,9 +81,14 @@ class HelpMeService : Service() {
 
 
         watcherRunnable = Runnable {
-            if (position < watcherList.size && requestStatus == true) {
+            if (position < watcherList.size && cycle < 2 && requestStatus == true) {
                 iterateWatchers(watcherList, position)
                 position++
+
+                if(position >= watcherList.size){
+                    cycle++
+                }
+
             } else {
                 stopSelf()
             }
@@ -92,10 +96,10 @@ class HelpMeService : Service() {
         }
 
         if (Build.VERSION.SDK_INT >= 26) {
-            val CHANNEL_ID = "my_channel_02"
+            val CHANNEL_ID = "watch_over_me_help_me"
             val channel = NotificationChannel(
                 CHANNEL_ID,
-                "My Channel 2",
+                "Watch Over Me (Help Me)",
                 NotificationManager.IMPORTANCE_DEFAULT
             )
             (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(
@@ -162,7 +166,7 @@ class HelpMeService : Service() {
         }
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
 
-            val timeNow = calendar.time
+            val timeNow = Calendar.getInstance().time
 
             val requestCall = apiService.helpMeRequestInitiate(
                 batteryLevel,

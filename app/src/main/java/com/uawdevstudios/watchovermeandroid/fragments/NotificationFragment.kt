@@ -76,20 +76,6 @@ class NotificationFragment : Fragment() {
         sortList()
     }
 
-    fun popNotificationItems() {
-        val calendar = Calendar.getInstance()
-        calendar.add(Calendar.HOUR_OF_DAY, -12)
-        val timeNow = calendar.time
-        for (i in notificationList.size - 1 downTo 0) {
-            val notificationTimeStamp =
-                formatter.parse(notificationList[i].notificationDate + " " + notificationList[i].notificationTime)
-            if (notificationTimeStamp!!.before(timeNow)) {
-                notificationList.removeAt(i)
-            }
-        }
-        sortList()
-    }
-
     private fun sortList() {
 
         notificationList.sortByDescending { formatter.parse(it.notificationDate + " " + it.notificationTime) }

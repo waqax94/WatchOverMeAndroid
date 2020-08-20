@@ -3,10 +3,8 @@ package com.uawdevstudios.watchovermeandroid.fragments
 import android.Manifest
 import android.app.Activity
 import android.app.ActivityManager
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.app.AlertDialog
+import android.content.*
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
@@ -25,7 +23,9 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.uawdevstudios.watchovermeandroid.R
 import com.uawdevstudios.watchovermeandroid.activities.HelpMeRequestActivity
+import com.uawdevstudios.watchovermeandroid.activities.LoginActivity
 import com.uawdevstudios.watchovermeandroid.activities.MainActivity
+import com.uawdevstudios.watchovermeandroid.models.NotificationItem
 import com.uawdevstudios.watchovermeandroid.services.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_fragment_home.view.*
@@ -67,6 +67,23 @@ class HomeFragment : Fragment() {
         ) + " " + loginData?.getString("wearerLastName", "")
 
 
+        if (isHelpMeServiceRunning()) {
+            rootView.homeHelpMeButton.text = "STOP"
+        }
+
+
+        val permissionDialog = AlertDialog.Builder(activity)
+        permissionDialog.setTitle("Help me request running")
+        permissionDialog.setMessage("Do you want to stop it?")
+
+        permissionDialog.setPositiveButton("Stop") { dialog, which ->
+            stoptHelpMeService()
+            rootView.homeHelpMeButton.text = "Help ME!"
+        }
+        permissionDialog.setNegativeButton("Cancel") { dialog, which ->
+
+        }
+
 
         broadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
@@ -85,10 +102,9 @@ class HomeFragment : Fragment() {
 
         rootView.homeHelpMeButton.setOnClickListener {
 
-            if(isHelpMeServiceRunning()){
-                stoptHelpMeService()
-            }
-            else{
+            if (isHelpMeServiceRunning()) {
+                permissionDialog.show()
+            } else {
                 val intent = Intent(rootView.context, HelpMeRequestActivity::class.java)
                 startActivity(intent)
                 activity?.finish()
