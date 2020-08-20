@@ -1,85 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPlaneBG"
     android:fitsSystemWindows="true"
-    tools:context=".activities.HelpMeRequestActivity"
-    android:background="@color/colorPlaneBG">
+    android:orientation="vertical"
+    android:padding="20dp"
+    tools:context=".activities.HelpMeRequestActivity">
+
 
     <TextView
         android:id="@+id/helpMeHeaderText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:textColor="@color/colorText1"
-        android:textSize="25sp"
-        android:textAlignment="center"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="1"
+        android:autoSizeMaxTextSize="25sp"
+        android:autoSizeTextType="uniform"
         android:fontFamily="@font/raleway_regular_italic"
-        android:text="Help me requestt will be initiated in"/>
+        android:gravity="center"
+        android:text="Help me requestt will be initiated in"
+        android:textAlignment="center"
+        android:textColor="@color/colorText1" />
 
     <TextView
         android:id="@+id/helpMeTimer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="10"
-        android:paddingBottom="20dp"
-        android:textSize="50sp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:autoSizeMaxTextSize="60sp"
+        android:autoSizeTextType="uniform"
         android:fontFamily="@font/raleway_bold"
-        android:textColor="@color/colorText1"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/helpMeHeaderText"
-        />
+        android:gravity="center"
+        android:text="10"
+        android:textAlignment="center"
+        android:textColor="@color/colorText1" />
 
     <TextView
         android:id="@+id/helpMeSecondText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/helpMeTimer"
-        android:textSize="25sp"
-        android:textColor="@color/colorText1"
-        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="30dp"
+        android:layout_weight="0.5"
+        android:autoSizeMaxTextSize="25sp"
+        android:autoSizeTextType="uniform"
         android:fontFamily="@font/raleway_regular_italic"
+        android:gravity="center"
         android:text="second(s)..."
-        android:layout_marginBottom="30dp"/>
+        android:textColor="@color/colorText1" />
 
-    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
-        android:id="@+id/helpMeProgress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:minHeight="200dp"
-        android:minWidth="200dp"
-        style="@style/Widget.MaterialProgressBar.ProgressBar"
-        app:mpb_progressTint="@color/colorButtonBG2"/>
+    <RelativeLayout
+        android:id="@+id/helpMeProgressLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2">
 
-    <ImageView
-        android:id="@+id/helpMeCancelButton"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:background="@drawable/button_bg6"
-        android:src="@drawable/cancel"
-        android:padding="30dp"/>
+        <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+            android:id="@+id/helpMeProgress"
+            style="@style/Widget.MaterialProgressBar.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:minWidth="160dp"
+            android:minHeight="160dp"
+            app:mpb_progressTint="@color/colorButtonBG2" />
+
+        <ImageView
+            android:id="@+id/helpMeCancelButton"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/button_bg6"
+            android:padding="30dp"
+            android:src="@drawable/cancel" />
+
+
+    </RelativeLayout>
 
 
     <TextView
         android:id="@+id/helpMeCancelText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/helpMeProgress"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_marginTop="30dp"
-        android:textColor="@color/colorText1"
-        android:textSize="25dp"
+        android:layout_weight="0.5"
+        android:autoSizeMaxTextSize="25sp"
+        android:autoSizeTextType="uniform"
+        android:fontFamily="@font/raleway_regular_italic"
+        android:gravity="center"
         android:text="Cancel Request"
-        android:fontFamily="@font/raleway_regular_italic"/>
+        android:textAlignment="center"
+        android:textColor="@color/colorText1" />
 
-</RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+
+</LinearLayout>
