@@ -193,8 +193,35 @@ class LoginActivity : AppCompatActivity() {
                                                 startActivity(intent)
                                             }
                                             else{
-                                                loginErrorMessage.text = "Service already logged in"
-                                                loginErrorLayout.visibility = View.VISIBLE
+                                                val loginData =
+                                                    getSharedPreferences("wearerInfo", Context.MODE_PRIVATE)
+                                                if(loginCCP.fullNumberWithPlus == loginData?.getString("wearerPhone", "") &&
+                                                    loginPassword.text.toString() == loginData?.getString("wearerPassword", "")){
+
+                                                    setLoginStatus(wearer.serviceId)
+                                                    val userData =
+                                                        getSharedPreferences("wearerInfo", Context.MODE_PRIVATE)
+                                                    val editor = userData.edit()
+                                                    editor.putString("wearerId", wearer.wearerId)
+                                                    editor.putString("serviceId", wearer.serviceId)
+                                                    editor.putString("wearerFirstName", wearer.wearerFirstName)
+                                                    editor.putString("wearerLastName", wearer.wearerLastName)
+                                                    editor.putString("wearerEmail", wearer.wearerEmail)
+                                                    editor.putString("wearerPhone", wearer.wearerPhone)
+                                                    editor.putString(
+                                                        "wearerPassword",
+                                                        loginPassword.text.toString()
+                                                    )
+                                                    editor.apply()
+                                                    updateTokenOnServer()
+                                                    val intent = Intent(baseContext, MainActivity::class.java)
+                                                    startActivity(intent)
+
+                                                }
+                                                else{
+                                                    loginErrorMessage.text = "Service already logged in"
+                                                    loginErrorLayout.visibility = View.VISIBLE
+                                                }
                                             }
                                         }
 
