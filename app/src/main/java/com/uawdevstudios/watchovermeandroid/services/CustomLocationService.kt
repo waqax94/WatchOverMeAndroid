@@ -10,6 +10,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.location.Geocoder
+import android.location.Location
 import android.os.BatteryManager
 import android.os.Build
 import android.os.IBinder
@@ -131,10 +133,11 @@ class CustomLocationService : Service() {
                             batteryLevel,
                             location.latitude.toString(),
                             location.longitude.toString(),
+                            reverseGeoCoder(location),
                             "Regularly timed log",
                             dateFormatter.format(timeNow),
                             timeFormatter.format(timeNow),
-                            "Regular Log",
+                            "Hourly Log",
                             serviceId
                         )
 
@@ -178,9 +181,22 @@ class CustomLocationService : Service() {
         super.onDestroy()
     }
 
+    fun reverseGeoCoder(location: Location?): String {
+        var locaity = ""
+        val gc = Geocoder(this, Locale.getDefault())
+        try {
+            val addresses = gc.getFromLocation(location!!.latitude, location.longitude, 2)
+            val address = addresses[0]
+            locaity = address.locality + ", " + address.adminArea + ", " + address.countryName
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+        return locaity
+    }
+
     companion object {
         private const val TAG = "LocationService"
         private const val UPDATE_INTERVAL = 30 * 60 * 1000.toLong()
-        private const val FASTEST_INTERVAL: Long = 2000 /* 2 sec */
+        private const val FASTEST_INTERVAL: Long = 29 * 60 * 1000 /* 2 sec */
     }
 }

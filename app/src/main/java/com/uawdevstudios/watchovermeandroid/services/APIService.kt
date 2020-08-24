@@ -67,7 +67,9 @@ interface APIService {
     @FormUrlEncoded
     @POST("deactivateHelpMeRequest")
     fun deactivateHelpMeRequest(
-        @Field("serviceId") serviceId: String?
+        @Field("serviceId") serviceId: String?,
+        @Field("responseTitle") responseTitle: String?,
+        @Field("responseText") responseText: String?
     ): Call<String>
 
     @FormUrlEncoded
@@ -76,6 +78,7 @@ interface APIService {
         @Field("batteryLevel") batteryLevel: String?,
         @Field("locationLatitude") locationLatitude: String?,
         @Field("locationLongitude") locationLongitude: String?,
+        @Field("locality") locality: String?,
         @Field("logText") logText: String?,
         @Field("logDate") logDate: String?,
         @Field("logTime") logTime: String?,
@@ -89,10 +92,44 @@ interface APIService {
         @Field("batteryLevel") batteryLevel: String?,
         @Field("locationLatitude") locationLatitude: String?,
         @Field("locationLongitude") locationLongitude: String?,
+        @Field("locality") locality: String?,
         @Field("logText") logText: String?,
         @Field("logDate") logDate: String?,
         @Field("logTime") logTime: String?,
         @Field("logType") logType: String?,
         @Field("serviceId") serviceId: String?
+    ): Call<String>
+
+    @FormUrlEncoded
+    @POST("contactWatcher")
+    fun contactWatcher(
+        @Field("serviceId") serviceId: String?,
+        @Field("responseTitle") responseTitle: String?,
+        @Field("responseText") responseText: String?,
+        @Field("watcherId") watcherId: String?,
+        @Field("cycle") cycle: String?,
+        @Field("alertLogId") alertLogId: String?,
+        @Field("wearerId") wearerId: String?,
+        @Field("sendDate") sendDate: String?,
+        @Field("sendTime") sendTime: String?,
+        @Field("responseLink") responseLink: String?,
+        @Field("watcherPhone") watcherPhone: String?,
+        @Field("wearerFullName") wearerFullName: String?
+        ): Call<ServerResponse>
+
+    @FormUrlEncoded
+    @POST("wearerNotification")
+    fun wearerNotification(
+        @Field("serviceId") serviceId: String?,
+        @Field("notificationTitle") notificationTitle: String?,
+        @Field("notificationText") notificationText: String?
+    ): Call<String>
+
+    @FormUrlEncoded
+    @POST("sendLocation")
+    fun sendLocation(
+        @Field("serviceId") serviceId: String?,
+        @Field("notificationTitle") notificationTitle: String?,
+        @Field("notificationText") notificationText: String?
     ): Call<String>
 }

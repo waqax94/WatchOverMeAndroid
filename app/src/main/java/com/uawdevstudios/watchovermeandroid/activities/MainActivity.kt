@@ -1,34 +1,33 @@
 package com.uawdevstudios.watchovermeandroid.activities
 
+import android.Manifest
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.app.ActivityManager
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.ViewTreeObserver
 import android.view.WindowManager
 import android.view.animation.AccelerateInterpolator
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
-import com.google.firebase.iid.FirebaseInstanceId
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.uawdevstudios.watchovermeandroid.R
-import com.uawdevstudios.watchovermeandroid.fragments.*
-import com.uawdevstudios.watchovermeandroid.services.APIService
+import com.uawdevstudios.watchovermeandroid.fragments.HomeFragment
+import com.uawdevstudios.watchovermeandroid.fragments.NotificationFragment
+import com.uawdevstudios.watchovermeandroid.fragments.ProfileFragment
+import com.uawdevstudios.watchovermeandroid.fragments.WatchersFragment
 import com.uawdevstudios.watchovermeandroid.services.CustomLocationService
-import com.uawdevstudios.watchovermeandroid.services.ServiceBuilder
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_main.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -47,7 +46,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        overridePendingTransition(R.anim.fade_in,R.anim.fade_out)
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
         setContentView(R.layout.activity_main)
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -124,8 +123,8 @@ class MainActivity : AppCompatActivity() {
             watchersVisible = false
             profileVisible = false
             mainFragmentTitle.text = "Notifications"
-            transaction.setCustomAnimations(R.anim.fade_in,R.anim.fade_out)
-            transaction.replace(R.id.mainFragmentContainer,NotificationFragment())
+            transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+            transaction.replace(R.id.mainFragmentContainer, NotificationFragment())
             transaction.addToBackStack(null)
             transaction.commit()
         }
@@ -144,8 +143,8 @@ class MainActivity : AppCompatActivity() {
             watchersVisible = false
             profileVisible = false
             mainFragmentTitle.text = "Home"
-            transaction.setCustomAnimations(R.anim.fade_in,R.anim.fade_out)
-            transaction.replace(R.id.mainFragmentContainer,HomeFragment())
+            transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+            transaction.replace(R.id.mainFragmentContainer, HomeFragment())
             transaction.addToBackStack(null)
             transaction.commit()
         }
@@ -164,8 +163,8 @@ class MainActivity : AppCompatActivity() {
             watchersVisible = true
             profileVisible = false
             mainFragmentTitle.text = "Watchers"
-            transaction.setCustomAnimations(R.anim.fade_in,R.anim.fade_out)
-            transaction.replace(R.id.mainFragmentContainer,WatchersFragment())
+            transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+            transaction.replace(R.id.mainFragmentContainer, WatchersFragment())
             transaction.addToBackStack(null)
             transaction.commit()
         }
@@ -185,8 +184,8 @@ class MainActivity : AppCompatActivity() {
             watchersVisible = false
             profileVisible = true
             mainFragmentTitle.text = "Profile"
-            transaction.setCustomAnimations(R.anim.fade_in,R.anim.fade_out)
-            transaction.replace(R.id.mainFragmentContainer,ProfileFragment())
+            transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+            transaction.replace(R.id.mainFragmentContainer, ProfileFragment())
             transaction.addToBackStack(null)
             transaction.commit()
         }

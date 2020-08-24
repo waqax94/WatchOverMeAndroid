@@ -74,6 +74,8 @@ class FirebaseNotificationService : FirebaseMessagingService() {
 
         FileService(this).saveNotification(notification)
 
+
+
         val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         manager.notify(0,builder.build())
 

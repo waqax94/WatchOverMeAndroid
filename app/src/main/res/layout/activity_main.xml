@@ -28,7 +28,7 @@
                 android:layout_marginStart="10dp"
                 android:text="Home"
                 android:fontFamily="@font/raleway_bold"
-                android:textColor="@color/colorAccent"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="20dp"/>
 
             <ImageView
@@ -37,11 +37,9 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="10dp"
                 android:layout_alignParentEnd="true"
-                android:textColor="@color/colorAccent"
                 android:src="@drawable/womcoloricon"/>
 
         </RelativeLayout>
-
         <FrameLayout
             android:id="@+id/mainFragmentContainer"
             android:layout_width="match_parent"

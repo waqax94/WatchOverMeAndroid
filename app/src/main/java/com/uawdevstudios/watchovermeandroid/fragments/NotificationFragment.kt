@@ -91,27 +91,3 @@ class NotificationFragment : Fragment() {
 
 
 }
-
-
-//notificationList.add(
-//NotificationItem(
-//"Waqas Waheed,The HelpMe Watch team is now contacting Iffat Khan for you my SMS, Email and phone. They are number 1 of 4 possible responding watchers for you. We will contact all of your Responding Watchers in sequence and keep you informed of the progress.",
-//"11 January 2020", "10:20:55 am"
-//)
-//)
-//addNotificationItem(NotificationItem(
-//"Waqas Waheed,The HelpMe Watch team is now contacting Iffat Khan for you my SMS, Email and phone. They are number 1 of 4 possible responding watchers for you. We will contact all of your Responding Watchers in sequence and keep you informed of the progress.",
-//"15 January 2020", "09:20:36 am"
-//))
-//addNotificationItem(NotificationItem(
-//"Waqas Waheed,The HelpMe Watch team is now contacting Iffat Khan for you my SMS, Email and phone. They are number 1 of 4 possible responding watchers for you. We will contact all of your Responding Watchers in sequence and keep you informed of the progress.",
-//"02 January 2020", "10:25:36 am"
-//))
-//addNotificationItem(NotificationItem(
-//"Waqas Waheed,The HelpMe Watch team is now contacting Iffat Khan for you my SMS, Email and phone. They are number 1 of 4 possible responding watchers for you. We will contact all of your Responding Watchers in sequence and keep you informed of the progress.",
-//"15 January 2020", "11:28:36 am"
-//))
-//addNotificationItem(NotificationItem(
-//"Waqas Waheed,The HelpMe Watch team is now contacting Iffat Khan for you my SMS, Email and phone. They are number 1 of 4 possible responding watchers for you. We will contact all of your Responding Watchers in sequence and keep you informed of the progress.",
-//"09 August 2020", "11:20:36 am"
-//))

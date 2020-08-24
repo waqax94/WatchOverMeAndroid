@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.replace
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -33,6 +34,7 @@ import kotlinx.android.synthetic.main.fragment_home.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -40,9 +42,15 @@ import java.util.*
 class HomeFragment : Fragment() {
 
     lateinit var broadcastReceiver: BroadcastReceiver
+    lateinit var UIBroadcastReceiver: BroadcastReceiver
     lateinit var rootView: View
     lateinit var fusedLocationClient: FusedLocationProviderClient
+    val timeFormatter = SimpleDateFormat("hh:mm:ss aa")
     var serviceId: String? = null
+    var wearFirstName: String? = null
+    var dialogTitle = ""
+    var dialogText = ""
+    var dialogButtonText = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,6 +67,7 @@ class HomeFragment : Fragment() {
         val loginData =
             activity?.getSharedPreferences("wearerInfo", Context.MODE_PRIVATE)
         serviceId = loginData?.getString("serviceId", "")
+        wearFirstName = loginData?.getString("wearerFirstName", "")
 
         rootView.homeServiceId.text = serviceId
         rootView.homeWearerName.text = loginData?.getString(
@@ -66,21 +75,17 @@ class HomeFragment : Fragment() {
             ""
         ) + " " + loginData?.getString("wearerLastName", "")
 
+        serviceCheck()
+        updateUI(rootView)
 
-        if (isHelpMeServiceRunning()) {
-            rootView.homeHelpMeButton.text = "STOP"
-        }
+        val permissionDialog1 = AlertDialog.Builder(activity)
+        permissionDialog1.setTitle("Help Me service is running")
+        permissionDialog1.setMessage("Stop contacting watchers")
 
-
-        val permissionDialog = AlertDialog.Builder(activity)
-        permissionDialog.setTitle("Help me request running")
-        permissionDialog.setMessage("Do you want to stop it?")
-
-        permissionDialog.setPositiveButton("Stop") { dialog, which ->
-            stoptHelpMeService()
-            rootView.homeHelpMeButton.text = "Help ME!"
-        }
-        permissionDialog.setNegativeButton("Cancel") { dialog, which ->
+        permissionDialog1.setPositiveButton("Stop") { dialog, which ->
+            //stoptHelpMeService()
+            HelpMeService.contactWatcherStatus = "Stopped"
+            updateUI(rootView)
 
         }
 
@@ -97,13 +102,35 @@ class HomeFragment : Fragment() {
             IntentFilter(Intent.ACTION_BATTERY_CHANGED)
         )
 
+        UIBroadcastReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                updateUI(rootView)
+            }
+        }
+
+        requireActivity().registerReceiver(this.UIBroadcastReceiver, IntentFilter("HelpMeStatus"))
+
         rootView.homeGreetingText.text = getGreetingText()
         getCurrentLocation()
 
         rootView.homeHelpMeButton.setOnClickListener {
 
             if (isHelpMeServiceRunning()) {
-                permissionDialog.show()
+
+                if (HelpMeService.contactWatcherStatus == "Running") {
+                    permissionDialog1.show()
+                } else {
+                    val permissionDialog2 = AlertDialog.Builder(activity)
+                    permissionDialog2.setTitle("Help Me service is currently unavailable")
+                    permissionDialog2.setMessage("It will be available after ${calculateRemainingTime()} minutes")
+
+                    permissionDialog2.setPositiveButton("Dismiss") { dialog, which ->
+
+                    }
+
+                    permissionDialog2.show()
+                }
+
             } else {
                 val intent = Intent(rootView.context, HelpMeRequestActivity::class.java)
                 startActivity(intent)
@@ -118,6 +145,7 @@ class HomeFragment : Fragment() {
         super.onStop()
         try {
             requireActivity().unregisterReceiver(broadcastReceiver)
+            requireActivity().unregisterReceiver(UIBroadcastReceiver)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -178,17 +206,23 @@ class HomeFragment : Fragment() {
         try {
             val addresses = gc.getFromLocation(location!!.latitude, location.longitude, 2)
             val address = addresses[0]
-            rootView.homeLocation.text = address.locality
+            rootView.homeLocation.text = (address.locality + ", " + address.adminArea)
         } catch (e: java.lang.Exception) {
             getCurrentLocation()
         }
     }
 
-    private fun stoptHelpMeService() {
-        if (isHelpMeServiceRunning()) {
-            val serviceIntent = Intent(rootView.context, HelpMeService::class.java)
-            serviceIntent.action = 2.toString()
-            activity?.stopService(serviceIntent)
+    private fun serviceCheck(){
+        try {
+            if(isHelpMeServiceRunning()){
+                if(calculateRemainingTime() > 21 || calculateRemainingTime() < 0){
+                    val helpServiceIntent = Intent(rootView.context,HelpMeService::class.java)
+                    activity?.stopService(helpServiceIntent)
+                }
+            }
+        }
+        catch (e: Exception){
+
         }
     }
 
@@ -201,6 +235,32 @@ class HomeFragment : Fragment() {
             }
         }
         return false
+    }
+
+    fun updateUI(rootView: View) {
+        if (isHelpMeServiceRunning()) {
+            if (HelpMeService.contactWatcherStatus == "Running") {
+                rootView.homeHelpMeButton.text = "STOP"
+                rootView.homeHelpMeButton.background = resources.getDrawable(R.drawable.button_bg2)
+            } else {
+                rootView.homeHelpMeButton.text = "Help ME!"
+                rootView.homeHelpMeButton.background = resources.getDrawable(R.drawable.button_bg7)
+            }
+        } else {
+            rootView.homeHelpMeButton.text = "Help ME!"
+            rootView.homeHelpMeButton.background = resources.getDrawable(R.drawable.button_bg2)
+        }
+    }
+
+    fun calculateRemainingTime() : Int{
+        val timeNow = Calendar.getInstance().time
+        val initiatedTime = timeFormatter.parse(HelpMeService.timeInitiated)
+        val calendar = Calendar.getInstance()
+        calendar.time = initiatedTime
+        calendar.add(Calendar.MINUTE, 20)
+        val availableTime = calendar.time
+        val timeRemaining = availableTime.minutes - timeNow.minutes
+        return timeRemaining
     }
 
 }
