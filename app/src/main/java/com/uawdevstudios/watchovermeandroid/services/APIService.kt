@@ -129,7 +129,9 @@ interface APIService {
     @POST("sendLocation")
     fun sendLocation(
         @Field("serviceId") serviceId: String?,
-        @Field("notificationTitle") notificationTitle: String?,
-        @Field("notificationText") notificationText: String?
+        @Field("receiverId") receiverId: String?,
+        @Field("latitude") latitude: String?,
+        @Field("longitude") longitude: String?,
+        @Field("address") address: String?
     ): Call<String>
 }
