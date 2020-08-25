@@ -11,6 +11,7 @@ import android.location.Location
 import android.os.BatteryManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,6 +39,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class HomeFragment : Fragment() {
 
@@ -45,7 +47,7 @@ class HomeFragment : Fragment() {
     lateinit var UIBroadcastReceiver: BroadcastReceiver
     lateinit var rootView: View
     lateinit var fusedLocationClient: FusedLocationProviderClient
-    val timeFormatter = SimpleDateFormat("hh:mm:ss aa")
+    val dateTimeFormatter = SimpleDateFormat("dd MM yyyy hh:mm:ss aa")
     var serviceId: String? = null
     var wearFirstName: String? = null
     var dialogTitle = ""
@@ -75,7 +77,7 @@ class HomeFragment : Fragment() {
             ""
         ) + " " + loginData?.getString("wearerLastName", "")
 
-        serviceCheck()
+        checkService()
         updateUI(rootView)
 
         val permissionDialog1 = AlertDialog.Builder(activity)
@@ -212,20 +214,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun serviceCheck(){
-        try {
-            if(isHelpMeServiceRunning()){
-                if(calculateRemainingTime() > 21 || calculateRemainingTime() < 0){
-                    val helpServiceIntent = Intent(rootView.context,HelpMeService::class.java)
-                    activity?.stopService(helpServiceIntent)
-                }
-            }
-        }
-        catch (e: Exception){
-
-        }
-    }
-
     private fun isHelpMeServiceRunning(): Boolean {
         val manager =
             activity?.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
@@ -235,6 +223,15 @@ class HomeFragment : Fragment() {
             }
         }
         return false
+    }
+
+    private fun checkService() {
+        if(isHelpMeServiceRunning()){
+            if(calculateRemainingTime() <= 0 || calculateRemainingTime() > 20){
+                val intent = Intent(rootView.context,HelpMeService::class.java)
+                requireActivity().stopService(intent)
+            }
+        }
     }
 
     fun updateUI(rootView: View) {
@@ -253,14 +250,13 @@ class HomeFragment : Fragment() {
     }
 
     fun calculateRemainingTime() : Int{
+        val ONE_MINUTE_IN_MILLIS = 60000
         val timeNow = Calendar.getInstance().time
-        val initiatedTime = timeFormatter.parse(HelpMeService.timeInitiated)
-        val calendar = Calendar.getInstance()
-        calendar.time = initiatedTime
-        calendar.add(Calendar.MINUTE, 20)
-        val availableTime = calendar.time
-        val timeRemaining = availableTime.minutes - timeNow.minutes
-        return timeRemaining
+        val initiatedTime = dateTimeFormatter.parse(HelpMeService.timeInitiated)
+        val t = initiatedTime.time
+        val availableTime = Date(t + (20 * ONE_MINUTE_IN_MILLIS))
+        val timeRemaining = availableTime.time - timeNow.time
+        return TimeUnit.MILLISECONDS.toMinutes(timeRemaining).toInt()
     }
 
 }

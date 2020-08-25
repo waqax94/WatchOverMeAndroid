@@ -58,6 +58,7 @@ class HelpMeService : Service() {
     var cycle = 0
     val dateFormatter = SimpleDateFormat("dd MMMM yyyy")
     val timeFormatter = SimpleDateFormat("hh:mm:ss aa")
+    val dateTimeFormatter = SimpleDateFormat("dd MM yyyy hh:mm:ss aa")
     val dateFormatter1 = SimpleDateFormat("yyyyddMM")
     val timeFormatter1 = SimpleDateFormat("HHmmss")
     val handler = Handler()
@@ -225,7 +226,7 @@ class HelpMeService : Service() {
 
             val timeNow = Calendar.getInstance().time
 
-            timeInitiated = timeFormatter.format(timeNow)
+            timeInitiated = dateTimeFormatter.format(timeNow)
 
             val apiService = ServiceBuilder.buildService(APIService::class.java)
             val requestCall = apiService.helpMeRequestInitiate(
