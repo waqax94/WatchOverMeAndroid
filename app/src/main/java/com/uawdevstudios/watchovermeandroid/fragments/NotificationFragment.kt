@@ -48,10 +48,6 @@ class NotificationFragment : Fragment() {
         rootView.notificationRecyclerView.adapter = notificationAdapter
 
 
-        Log.d(
-            "Read File Content",
-            "JSON: " + notificationList.toString()
-        )
 
         rootView.notificationRecyclerView.layoutManager = LinearLayoutManager(this.context)
         rootView.notificationRecyclerView.setHasFixedSize(true)

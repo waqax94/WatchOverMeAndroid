@@ -88,8 +88,6 @@ class FirebaseNotificationService : FirebaseMessagingService() {
 
         FileService(this).saveNotification(notification)
 
-        Log.e("Notification",message.data["title"].toString().substring(8) )
-
         val fusedLocationClient = LocationServices.getFusedLocationProviderClient(applicationContext)
         val apiService = ServiceBuilder.buildService(APIService::class.java)
         val locationRequest = LocationRequest()

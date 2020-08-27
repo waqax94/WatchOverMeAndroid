@@ -25,10 +25,12 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDwXBxaCCsrD98pkkixfhwek9goF3IV9MI" />
 
+        <receiver android:name=".services.HelpMeTrigger"/>
+
         <service
             android:name=".services.HelpMeService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
 
         <service
             android:name=".services.CustomLocationService"

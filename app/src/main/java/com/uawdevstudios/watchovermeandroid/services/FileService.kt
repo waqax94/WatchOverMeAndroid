@@ -34,11 +34,6 @@ class FileService(context: Context) {
         catch (e:Exception){
             e.printStackTrace()
         }
-
-        Log.d(
-            "File Content",
-            "JSON: " + jsonString
-        )
     }
 
     fun loadFromFile(): ArrayList<NotificationItem>{

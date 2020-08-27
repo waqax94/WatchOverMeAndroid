@@ -254,7 +254,7 @@ class HomeFragment : Fragment() {
         val timeNow = Calendar.getInstance().time
         val initiatedTime = dateTimeFormatter.parse(HelpMeService.timeInitiated)
         val t = initiatedTime.time
-        val availableTime = Date(t + (20 * ONE_MINUTE_IN_MILLIS))
+        val availableTime = Date(t + (15 * ONE_MINUTE_IN_MILLIS))
         val timeRemaining = availableTime.time - timeNow.time
         return TimeUnit.MILLISECONDS.toMinutes(timeRemaining).toInt()
     }
