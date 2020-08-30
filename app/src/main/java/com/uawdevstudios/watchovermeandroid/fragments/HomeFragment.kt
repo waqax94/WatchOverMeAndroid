@@ -17,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.replace
@@ -50,9 +51,6 @@ class HomeFragment : Fragment() {
     val dateTimeFormatter = SimpleDateFormat("dd MM yyyy hh:mm:ss aa")
     var serviceId: String? = null
     var wearFirstName: String? = null
-    var dialogTitle = ""
-    var dialogText = ""
-    var dialogButtonText = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,6 +114,8 @@ class HomeFragment : Fragment() {
         getCurrentLocation()
 
         rootView.homeHelpMeButton.setOnClickListener {
+
+
 
             if (isHelpMeServiceRunning()) {
 

@@ -1,12 +1,16 @@
 package com.uawdevstudios.watchovermeandroid.activities
 
+import android.Manifest
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.uawdevstudios.watchovermeandroid.R
 import com.uawdevstudios.watchovermeandroid.services.HelpMeService
 import kotlinx.android.synthetic.main.activity_help_me_request.*
@@ -20,6 +24,20 @@ class HelpMeRequestActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         overridePendingTransition(R.anim.fade_in,R.anim.fade_out)
         setContentView(R.layout.activity_help_me_request)
+
+        if(ContextCompat.checkSelfPermission(this@HelpMeRequestActivity,
+                Manifest.permission.SEND_SMS) !=
+            PackageManager.PERMISSION_GRANTED){
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this@HelpMeRequestActivity,
+                    Manifest.permission.SEND_SMS)){
+                ActivityCompat.requestPermissions(this@HelpMeRequestActivity,
+                    arrayOf(Manifest.permission.SEND_SMS), 2)
+            } else {
+                ActivityCompat.requestPermissions(this@HelpMeRequestActivity,
+                    arrayOf(Manifest.permission.SEND_SMS), 2)
+            }
+
+        }
 
         timer = object : CountDownTimer(10*1000,1){
             override fun onFinish() {

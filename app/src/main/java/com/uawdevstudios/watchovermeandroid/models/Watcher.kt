@@ -13,6 +13,9 @@ data class Watcher(
     @SerializedName("l_name")
     @Expose
     var watcherLastName: String? = null,
+    @SerializedName("email")
+    @Expose
+    var watcherEmail: String? = null,
     @SerializedName("phone")
     @Expose
     var watcherPhone: String? = null,

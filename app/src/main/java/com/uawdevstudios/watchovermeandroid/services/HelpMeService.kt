@@ -95,6 +95,20 @@ class HelpMeService : Service() {
             e.printStackTrace()
         }
 
+        val apiService = ServiceBuilder.buildService(APIService::class.java)
+        val requestCall = apiService.deactivateHelpMeRequest(serviceId, alertLogId)
+
+        requestCall.enqueue(object : Callback<String>{
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+
+            }
+
+        })
+
         Log.e("Help Me Service", "Destroyed")
 
         watcherList.clear()
@@ -111,6 +125,7 @@ class HelpMeService : Service() {
         position = 0
         cycle = 0
         stopMe = false
+
 
         sendBroadcast(Intent().setAction("HelpMeStatus"))
     }

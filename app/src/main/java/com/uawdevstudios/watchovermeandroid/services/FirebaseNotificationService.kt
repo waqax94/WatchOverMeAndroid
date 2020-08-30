@@ -60,10 +60,15 @@ class FirebaseNotificationService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
-        showNotification(message)
+        if(message.notification == null){
+            saveDataNotification(message,message.data["title"].toString(),message.data["body"].toString())
+        }
+        else {
+            showNotification(message)
+        }
     }
 
-    private fun showNotification(message: RemoteMessage) {
+    private fun showNotification(message: RemoteMessage){
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
@@ -72,8 +77,25 @@ class FirebaseNotificationService : FirebaseMessagingService() {
 
         val builder = NotificationCompat.Builder(this)
             .setAutoCancel(true)
-            .setContentTitle(message.data["title"])
-            .setContentText(message.data["body"])
+            .setContentTitle(message.notification?.title)
+            .setContentText(message.notification?.body)
+            .setSmallIcon(R.drawable.app_notification_icon)
+            .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL)
+            .setContentIntent(pendingIntent)
+
+    }
+
+    private fun saveDataNotification(message: RemoteMessage,title: String, data: String) {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        val pendingIntent =
+            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val builder = NotificationCompat.Builder(this)
+            .setAutoCancel(true)
+            .setContentTitle(title)
+            .setContentText(data)
             .setSmallIcon(R.drawable.app_notification_icon)
             .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL)
             .setContentIntent(pendingIntent)

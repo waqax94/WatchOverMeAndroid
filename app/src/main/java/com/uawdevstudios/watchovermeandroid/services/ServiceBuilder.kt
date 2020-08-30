@@ -4,6 +4,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 object ServiceBuilder {
     //"http://192.168.0.106/FoodPalm/"
@@ -14,7 +15,10 @@ object ServiceBuilder {
     private val logger = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
     // Create okhttp client
-    private val okHttp: OkHttpClient.Builder = OkHttpClient.Builder().addInterceptor(logger)
+    private val okHttp: OkHttpClient.Builder =
+        OkHttpClient.Builder().connectTimeout(100, TimeUnit.SECONDS)
+            .readTimeout(100, TimeUnit.SECONDS)
+            .addInterceptor(logger)
 
     // Create Retrofit builder
     private val builder: Retrofit.Builder = Retrofit.Builder().baseUrl(URL)

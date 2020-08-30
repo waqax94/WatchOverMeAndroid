@@ -67,7 +67,8 @@ interface APIService {
     @FormUrlEncoded
     @POST("deactivateHelpMeRequest")
     fun deactivateHelpMeRequest(
-        @Field("serviceId") serviceId: String?
+        @Field("serviceId") serviceId: String?,
+        @Field("alertLogId") alertLogId: String?
     ): Call<String>
 
     @FormUrlEncoded
@@ -112,7 +113,10 @@ interface APIService {
         @Field("sendTime") sendTime: String?,
         @Field("responseLink") responseLink: String?,
         @Field("watcherPhone") watcherPhone: String?,
-        @Field("wearerFullName") wearerFullName: String?
+        @Field("wearerFullName") wearerFullName: String?,
+        @Field("watcherEmail") watcherEmail: String?,
+        @Field("watcherFirstName") watcherFirstName: String?,
+        @Field("watcherLastName") watcherLastName: String?
         ): Call<ServerResponse>
 
     @FormUrlEncoded

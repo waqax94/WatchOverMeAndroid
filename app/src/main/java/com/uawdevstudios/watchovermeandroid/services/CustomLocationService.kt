@@ -93,22 +93,42 @@ class CustomLocationService : Service() {
             mLocationRequestHighAccuracy.fastestInterval = FASTEST_INTERVAL
 
 
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+                if (ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    Log.d(
+                        TAG,
+                        "getLocation: stopping the location service."
+                    )
+                    stopSelf()
+                    return
+                }
                 Log.d(
                     TAG,
-                    "getLocation: stopping the location service."
+                    "getLocation: getting location information."
                 )
-                stopSelf()
-                return
             }
-            Log.d(
-                TAG,
-                "getLocation: getting location information."
-            )
+            else {
+                if (ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    Log.d(
+                        TAG,
+                        "getLocation: stopping the location service."
+                    )
+                    stopSelf()
+                    return
+                }
+                Log.d(
+                    TAG,
+                    "getLocation: getting location information."
+                )
+            }
 
             locationCallback = object : LocationCallback() {
                 override fun onLocationResult(locationResult: LocationResult) {
