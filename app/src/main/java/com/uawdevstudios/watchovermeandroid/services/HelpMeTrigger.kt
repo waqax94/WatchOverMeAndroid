@@ -242,10 +242,13 @@ class HelpMeTrigger: BroadcastReceiver() {
     companion object {
         const val HELP_ME_TRIGGER = "HelpMeTrigger"
         fun schecduleExactAlarm(context: Context, alarmManager: AlarmManager, interval: Int){
-            val refreshInterval = interval
+            val c = Calendar.getInstance()
+            c.add(Calendar.SECOND, interval)
+            val timeAfter = c.timeInMillis
+            //val refreshInterval = interval
             val intent = Intent(context, HelpMeTrigger::class.java)
             val pendingIntent = PendingIntent.getBroadcast(context,0,intent,0)
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP,SystemClock.elapsedRealtime()+(refreshInterval*1000),pendingIntent)
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP,timeAfter,pendingIntent)
         }
     }
 }

@@ -72,12 +72,17 @@ class FirebaseNotificationService : FirebaseMessagingService() {
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
+        var notificationTitle = message.notification?.title
         val pendingIntent =
             PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
+        if(notificationTitle.toString().substring(0,8) == "Location"){
+            notificationTitle = "Location Request"
+        }
+        
         val builder = NotificationCompat.Builder(this)
             .setAutoCancel(true)
-            .setContentTitle(message.notification?.title)
+            .setContentTitle(notificationTitle)
             .setContentText(message.notification?.body)
             .setSmallIcon(R.drawable.app_notification_icon)
             .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL)
