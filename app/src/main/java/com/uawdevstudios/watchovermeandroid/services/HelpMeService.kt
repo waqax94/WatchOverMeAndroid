@@ -1,6 +1,7 @@
 package com.uawdevstudios.watchovermeandroid.services
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.*
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -9,10 +10,7 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
-import android.os.BatteryManager
-import android.os.Build
-import android.os.CountDownTimer
-import android.os.IBinder
+import android.os.*
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -36,11 +34,13 @@ class HelpMeService : Service() {
 
     lateinit var broadcastReceiver: BroadcastReceiver
     lateinit var fusedLocationClient: FusedLocationProviderClient
+    var wakeLock: PowerManager.WakeLock? = null
 
     override fun onBind(intent: Intent): IBinder? {
         return null
     }
 
+    @SuppressLint("InvalidWakeLockTag")
     override fun onCreate() {
         super.onCreate()
         val loginData =
@@ -50,6 +50,8 @@ class HelpMeService : Service() {
         wearerFirstName = loginData?.getString("wearerFirstName", "")
         wearerLastName = loginData?.getString("wearerLastName", "")
         wearerId = loginData?.getString("wearerId", "")
+        val powerManager = applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
+        wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,HELP_ME_TRIGGER)
         broadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 batteryLevel = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0).toString()
@@ -83,12 +85,14 @@ class HelpMeService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         timeInitiated = ""
         contactWatcherStatus = "Running"
+
         initiateService()
         return START_NOT_STICKY
     }
 
     override fun onDestroy() {
 
+        wakeLock?.release()
         try {
             unregisterReceiver(broadcastReceiver)
         } catch (e: Exception) {
@@ -191,6 +195,7 @@ class HelpMeService : Service() {
                         }
 
                         sendBroadcast(Intent().setAction("HelpMeStatus"))
+                        wakeLock?.acquire()
                         HelpMeTrigger.schecduleExactAlarm(applicationContext,getSystemService(ALARM_SERVICE) as AlarmManager, 1)
 
                     } else {
@@ -221,6 +226,7 @@ class HelpMeService : Service() {
     }
 
     companion object {
+        const val HELP_ME_TRIGGER = "HelpMeTrigger"
         var timeInitiated = ""
         var contactWatcherStatus = "Running"
         var context: Context? = null

@@ -1,6 +1,7 @@
 package com.uawdevstudios.watchovermeandroid.services
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
@@ -8,6 +9,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
+import android.os.PowerManager
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -20,6 +22,7 @@ import com.google.firebase.messaging.RemoteMessage
 import com.uawdevstudios.watchovermeandroid.R
 import com.uawdevstudios.watchovermeandroid.activities.MainActivity
 import com.uawdevstudios.watchovermeandroid.models.NotificationItem
+import com.uawdevstudios.watchovermeandroid.services.HelpMeService.Companion.HELP_ME_TRIGGER
 import kotlinx.android.synthetic.main.content_fragment_home.view.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -68,7 +71,16 @@ class FirebaseNotificationService : FirebaseMessagingService() {
         }
     }
 
+
     private fun showNotification(message: RemoteMessage){
+
+        val powerManager = applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
+        val wakeLock = powerManager.newWakeLock(
+            PowerManager.PARTIAL_WAKE_LOCK,
+            "notification :LOCATION_TRIGGER"
+        )
+
+        wakeLock.acquire(60*1000L)
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
