@@ -10,7 +10,9 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 class FileService(context: Context) {
@@ -64,19 +66,20 @@ class FileService(context: Context) {
     }
 
     fun removeNotifications(){
-        var notificationList = ArrayList<NotificationItem>()
-        notificationList = loadFromFile()
+        val notificationList = loadFromFile()
+        val TIME_IN_MILLIS = 11 * 60 * 60000
 
         val calendar = Calendar.getInstance()
-        calendar.add(Calendar.HOUR_OF_DAY, -12)
         val timeNow = calendar.time
         for (i in notificationList.size - 1 downTo 0) {
-            val notificationTimeStamp =
-                formatter.parse(notificationList[i].notificationDate + " " + notificationList[i].notificationTime)
-            if (notificationTimeStamp!!.before(timeNow)) {
+            val notificationTimeStamp = formatter.parse(notificationList[i].notificationDate + " " + notificationList[i].notificationTime)
+            if (timeNow.time - notificationTimeStamp!!.time >= TIME_IN_MILLIS) {
                 notificationList.removeAt(i)
             }
         }
+        writeToFile(notificationList)
+
+
     }
 
     companion object {
