@@ -14,6 +14,7 @@ import android.os.SystemClock
 import android.telephony.SmsManager
 import android.util.Log
 import android.widget.Toast
+import androidx.legacy.content.WakefulBroadcastReceiver
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.uawdevstudios.watchovermeandroid.models.ServerResponse
 import com.uawdevstudios.watchovermeandroid.models.Watcher
@@ -29,10 +30,6 @@ class HelpMeTrigger: BroadcastReceiver() {
 
     @SuppressLint("InvalidWakeLockTag")
     override fun onReceive(context: Context?, p1: Intent?) {
-
-
-
-
         val handler = Handler()
         val watcherRunnable = Runnable {
 
@@ -242,7 +239,7 @@ class HelpMeTrigger: BroadcastReceiver() {
             val timeAfter = c.timeInMillis
             val intent = Intent(context, HelpMeTrigger::class.java)
             val pendingIntent = PendingIntent.getBroadcast(context,0,intent,0)
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP,timeAfter,pendingIntent)
+            alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,timeAfter,pendingIntent)
         }
     }
 }

@@ -63,6 +63,15 @@ class FirebaseNotificationService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
+
+        val powerManager = applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
+        val wakeLock = powerManager.newWakeLock(
+            PowerManager.PARTIAL_WAKE_LOCK,
+            "notification :LOCATION_TRIGGER"
+        )
+
+        wakeLock.acquire(60*1000L)
+
         if(message.notification == null){
             saveDataNotification(message,message.data["title"].toString(),message.data["body"].toString())
         }
@@ -73,14 +82,6 @@ class FirebaseNotificationService : FirebaseMessagingService() {
 
 
     private fun showNotification(message: RemoteMessage){
-
-        val powerManager = applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
-        val wakeLock = powerManager.newWakeLock(
-            PowerManager.PARTIAL_WAKE_LOCK,
-            "notification :LOCATION_TRIGGER"
-        )
-
-        wakeLock.acquire(60*1000L)
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
