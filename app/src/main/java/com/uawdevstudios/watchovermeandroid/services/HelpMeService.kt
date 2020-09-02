@@ -84,7 +84,7 @@ class HelpMeService : Service() {
         timeInitiated = ""
         contactWatcherStatus = "Running"
         initiateService()
-        return START_NOT_STICKY
+        return START_STICKY
     }
 
     override fun onDestroy() {

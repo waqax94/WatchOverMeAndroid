@@ -245,7 +245,7 @@ class HelpMeTrigger: BroadcastReceiver() {
             val refreshInterval = interval
             val intent = Intent(context, HelpMeTrigger::class.java)
             val pendingIntent = PendingIntent.getBroadcast(context,0,intent,0)
-            alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP,SystemClock.elapsedRealtime()+(refreshInterval*1000),pendingIntent)
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP,SystemClock.elapsedRealtime()+(refreshInterval*1000),pendingIntent)
         }
     }
 }

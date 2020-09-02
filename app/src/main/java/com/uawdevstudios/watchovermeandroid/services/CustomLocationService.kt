@@ -79,7 +79,7 @@ class CustomLocationService : Service() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         Log.d(TAG, "onStartCommand: called.")
         location
-        return START_NOT_STICKY
+        return START_STICKY
     }
 
     private val location:
