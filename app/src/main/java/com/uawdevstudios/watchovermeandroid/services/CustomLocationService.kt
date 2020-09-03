@@ -1,10 +1,7 @@
 package com.uawdevstudios.watchovermeandroid.services
 
 import android.Manifest
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.Service
+import android.app.*
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -20,6 +17,8 @@ import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import com.google.android.gms.location.*
+import com.uawdevstudios.watchovermeandroid.activities.MainActivity
+import com.uawdevstudios.watchovermeandroid.activities.SplashScreen
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -47,6 +46,12 @@ class CustomLocationService : Service() {
         serviceId = loginData?.getString("serviceId", "")
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
+        val intent = Intent(this, SplashScreen::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val pendingIntent =
+            PendingIntent.getActivity(this, 0, intent, 0)
+
         broadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 batteryLevel = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0).toString()
@@ -70,8 +75,9 @@ class CustomLocationService : Service() {
             )
             val notification: Notification = NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Watch Over Me Service")
-                .setContentText("Location service is running").build()
-            notification.flags = Notification.FLAG_NO_CLEAR
+                .setContentText("Location service is running")
+                .setContentIntent(pendingIntent)
+                .build()
             startForeground(1, notification)
         }
     }

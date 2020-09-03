@@ -20,6 +20,8 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.uawdevstudios.watchovermeandroid.activities.MainActivity
+import com.uawdevstudios.watchovermeandroid.activities.SplashScreen
 import com.uawdevstudios.watchovermeandroid.models.ServerResponse
 import com.uawdevstudios.watchovermeandroid.models.Watcher
 import retrofit2.Call
@@ -64,6 +66,13 @@ class HelpMeService : Service() {
         )
 
 
+        val intent = Intent(this, SplashScreen::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val pendingIntent =
+            PendingIntent.getActivity(this, 0, intent, 0)
+
+
         if (Build.VERSION.SDK_INT >= 26) {
             val CHANNEL_ID = "watch_over_me_help_me"
             val channel = NotificationChannel(
@@ -76,8 +85,9 @@ class HelpMeService : Service() {
             )
             val notification: Notification = NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Watch Over Me")
-                .setContentText("Help me request is currently in progress.").build()
-            notification.flags = Notification.FLAG_NO_CLEAR
+                .setContentText("Help me request is currently in progress.")
+                .setContentIntent(pendingIntent)
+                .build()
             startForeground(2, notification)
         }
     }

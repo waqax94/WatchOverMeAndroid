@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -20,18 +20,21 @@
         android:roundIcon="@mipmap/app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <receiver
+            android:name=".services.LocationBroadcast"
+            android:enabled="true"
+            android:exported="true"></receiver>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDwXBxaCCsrD98pkkixfhwek9goF3IV9MI" />
 
-        <receiver android:name=".services.HelpMeTrigger"/>
+        <receiver android:name=".services.HelpMeTrigger" />
 
         <service
             android:name=".services.HelpMeService"
             android:enabled="true"
             android:exported="true" />
-
         <service
             android:name=".services.CustomLocationService"
             android:enabled="true"
@@ -47,8 +50,7 @@
         <activity
             android:name=".activities.HelpMeRequestActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.NoConnectionActivity"
             android:screenOrientation="portrait"

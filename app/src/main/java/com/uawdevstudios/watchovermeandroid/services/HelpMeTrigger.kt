@@ -14,7 +14,6 @@ import android.os.SystemClock
 import android.telephony.SmsManager
 import android.util.Log
 import android.widget.Toast
-import androidx.legacy.content.WakefulBroadcastReceiver
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.uawdevstudios.watchovermeandroid.models.ServerResponse
 import com.uawdevstudios.watchovermeandroid.models.Watcher
@@ -30,6 +29,14 @@ class HelpMeTrigger: BroadcastReceiver() {
 
     @SuppressLint("InvalidWakeLockTag")
     override fun onReceive(context: Context?, p1: Intent?) {
+
+        Log.e("Alarm", "Alarm fired")
+
+        val powerManager = context!!.getSystemService(Context.POWER_SERVICE) as PowerManager
+        val wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,HELP_ME_TRIGGER)
+        wakeLock.acquire()
+
+
         val handler = Handler()
         val watcherRunnable = Runnable {
 
@@ -50,7 +57,7 @@ class HelpMeTrigger: BroadcastReceiver() {
 
                     }
                 })
-                stopHelpMeService(context!!)
+                stopHelpMeService(context)
             }
 
             else if (HelpMeService.position < HelpMeService.watcherList.size && HelpMeService.cycle < 2 && HelpMeService.contactWatcherStatus == "Running") {
@@ -61,7 +68,7 @@ class HelpMeTrigger: BroadcastReceiver() {
                     HelpMeService.position = 0
                     HelpMeService.cycle++
                 }
-                schecduleExactAlarm(context!!,context.getSystemService(Context.ALARM_SERVICE) as AlarmManager, 20)
+                schecduleExactAlarm(context,context.getSystemService(Context.ALARM_SERVICE) as AlarmManager, 20)
 
             } else {
 
@@ -108,7 +115,7 @@ class HelpMeTrigger: BroadcastReceiver() {
                     }
 
                 })
-                context!!.sendBroadcast(Intent().setAction("HelpMeStatus"))
+                context.sendBroadcast(Intent().setAction("HelpMeStatus"))
                 val timeNow = Calendar.getInstance().time
                 HelpMeService.timeInitiated = HelpMeService.dateTimeFormatter.format(timeNow)
                 schecduleExactAlarm(context,context.getSystemService(Context.ALARM_SERVICE) as AlarmManager, 15 * 60)
@@ -116,6 +123,7 @@ class HelpMeTrigger: BroadcastReceiver() {
 
         }
         handler.post(watcherRunnable)
+        wakeLock.release()
     }
 
 
@@ -233,13 +241,15 @@ class HelpMeTrigger: BroadcastReceiver() {
     }
 
     companion object {
+        const val HELP_ME_TRIGGER = "HelpMeTrigger"
         fun schecduleExactAlarm(context: Context, alarmManager: AlarmManager, interval: Int){
             val c = Calendar.getInstance()
             c.add(Calendar.SECOND, interval)
             val timeAfter = c.timeInMillis
             val intent = Intent(context, HelpMeTrigger::class.java)
+            intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
             val pendingIntent = PendingIntent.getBroadcast(context,0,intent,0)
-            alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,timeAfter,pendingIntent)
+            alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(timeAfter,pendingIntent),pendingIntent)
         }
     }
 }
