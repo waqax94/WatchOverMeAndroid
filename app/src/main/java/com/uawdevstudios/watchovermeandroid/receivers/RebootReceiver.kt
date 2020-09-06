@@ -67,7 +67,7 @@ class RebootReceiver : BroadcastReceiver() {
             val c = Calendar.getInstance()
             c.add(Calendar.SECOND, interval)
             val timeAfter = c.timeInMillis
-            val intent = Intent(context, HelpMeTrigger::class.java)
+            val intent = Intent(context, RebootReceiver::class.java)
             intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
             val pendingIntent = PendingIntent.getBroadcast(context,0,intent,0)
             alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(timeAfter,pendingIntent),pendingIntent)
