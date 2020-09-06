@@ -20,10 +20,10 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.uawdevstudios.watchovermeandroid.activities.MainActivity
 import com.uawdevstudios.watchovermeandroid.activities.SplashScreen
 import com.uawdevstudios.watchovermeandroid.models.ServerResponse
 import com.uawdevstudios.watchovermeandroid.models.Watcher
+import com.uawdevstudios.watchovermeandroid.receivers.HelpMeTrigger
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

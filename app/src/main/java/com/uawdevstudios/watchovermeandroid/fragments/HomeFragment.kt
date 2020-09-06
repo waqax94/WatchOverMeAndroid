@@ -182,24 +182,25 @@ class HomeFragment : Fragment() {
         if (ActivityCompat.checkSelfPermission(
                 requireActivity().applicationContext,
                 Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireActivity().applicationContext,
-                Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             activity?.let {
                 ActivityCompat.requestPermissions(
                     it,
                     arrayOf(
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
+                        Manifest.permission.ACCESS_FINE_LOCATION
                     ),
                     111
                 )
             }
         }
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-            reverseGeoCoder(location)
+            try {
+                reverseGeoCoder(location)
+            }
+            catch (e: Exception){
+                e.printStackTrace()
+            }
         }
     }
 

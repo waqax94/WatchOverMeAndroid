@@ -1,4 +1,4 @@
-package com.uawdevstudios.watchovermeandroid.services
+package com.uawdevstudios.watchovermeandroid.receivers
 
 import android.annotation.SuppressLint
 import android.app.AlarmManager
@@ -6,21 +6,19 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
-import android.os.BatteryManager
 import android.os.Handler
 import android.os.PowerManager
-import android.os.SystemClock
 import android.telephony.SmsManager
 import android.util.Log
 import android.widget.Toast
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.uawdevstudios.watchovermeandroid.models.ServerResponse
 import com.uawdevstudios.watchovermeandroid.models.Watcher
+import com.uawdevstudios.watchovermeandroid.services.APIService
+import com.uawdevstudios.watchovermeandroid.services.HelpMeService
+import com.uawdevstudios.watchovermeandroid.services.ServiceBuilder
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -33,7 +31,7 @@ class HelpMeTrigger: BroadcastReceiver() {
         Log.e("Alarm", "Alarm fired")
 
         val powerManager = context!!.getSystemService(Context.POWER_SERVICE) as PowerManager
-        val wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,HELP_ME_TRIGGER)
+        val wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, HELP_ME_TRIGGER)
         wakeLock.acquire()
 
 
@@ -44,7 +42,8 @@ class HelpMeTrigger: BroadcastReceiver() {
                 val apiService = ServiceBuilder.buildService(APIService::class.java)
 
                 val requestCall =
-                    apiService.wearerNotification(HelpMeService.serviceId,
+                    apiService.wearerNotification(
+                        HelpMeService.serviceId,
                         "Help me service",
                         "Help me service is now available")
 
@@ -61,14 +60,14 @@ class HelpMeTrigger: BroadcastReceiver() {
             }
 
             else if (HelpMeService.position < HelpMeService.watcherList.size && HelpMeService.cycle < 2 && HelpMeService.contactWatcherStatus == "Running") {
-                iterateWatchers(HelpMeService.watcherList)
+                iterateWatchers(HelpMeService.watcherList, HelpMeService.position, context)
                 HelpMeService.position++
 
                 if (HelpMeService.position >= HelpMeService.watcherList.size) {
                     HelpMeService.position = 0
                     HelpMeService.cycle++
                 }
-                schecduleExactAlarm(context,context.getSystemService(Context.ALARM_SERVICE) as AlarmManager, 20)
+
 
             } else {
 
@@ -127,7 +126,7 @@ class HelpMeTrigger: BroadcastReceiver() {
     }
 
 
-    fun iterateWatchers(watchers: ArrayList<Watcher>) {
+    fun iterateWatchers(watchers: ArrayList<Watcher>, pos: Int, context: Context) {
 
 
         val notificationHeader = "Help Me Response"
@@ -180,18 +179,18 @@ class HelpMeTrigger: BroadcastReceiver() {
             HelpMeService.serviceId,
             notificationHeader,
             notificationText,
-            watchers[HelpMeService.position].watcherId,
+            watchers[pos].watcherId,
             HelpMeService.cycle.toString(),
             HelpMeService.alertLogId,
             HelpMeService.wearerId,
             HelpMeService.dateFormatter.format(timeNow),
             HelpMeService.timeFormatter.format(timeNow),
             responseLink,
-            watchers[HelpMeService.position].watcherPhone,
+            watchers[pos].watcherPhone,
             HelpMeService.wearerFirstName + " " + HelpMeService.wearerLastName,
-            watchers[HelpMeService.position].watcherEmail,
-            watchers[HelpMeService.position].watcherFirstName,
-            watchers[HelpMeService.position].watcherLastName
+            watchers[pos].watcherEmail,
+            watchers[pos].watcherFirstName,
+            watchers[pos].watcherLastName
         )
 
         requestCall.enqueue(object : Callback<ServerResponse> {
@@ -205,20 +204,23 @@ class HelpMeTrigger: BroadcastReceiver() {
                     if (serverResponse.connection!! && serverResponse.queryStatus!!) {
                         HelpMeService.contactWatcherStatus = "Responded"
                     } else if (serverResponse.connection!! && !serverResponse.queryStatus!!) {
-                        iterateWatchers(watchers)
+                        iterateWatchers(watchers,pos+1, context)
                         HelpMeService.position++
                     } else {
                         if (smsStatus) {
-                            val smsText = "Hi " + watchers[HelpMeService.position].watcherFirstName + ", I need your help. Please follow the link to repond: \n" + responseLink
+                            val smsText = "Hi " + watchers[pos].watcherFirstName + ", I need your help. Please follow the link to respond: \n" + responseLink
                             try {
                                 val smsManager = SmsManager.getDefault();
-                                smsManager.sendTextMessage(watchers[HelpMeService.position].watcherPhone, null, smsText, null, null);
+                                smsManager.sendTextMessage(watchers[pos].watcherPhone, null, smsText, null, null);
                             } catch (e: Exception) {
-                                Toast.makeText(HelpMeService.context, e.toString(),
+                                Toast.makeText(
+                                    HelpMeService.context, e.toString(),
                                     Toast.LENGTH_LONG).show();
                             }
                         }
                     }
+
+                    schecduleExactAlarm(context,context.getSystemService(Context.ALARM_SERVICE) as AlarmManager, 20)
 
                 } else {
 

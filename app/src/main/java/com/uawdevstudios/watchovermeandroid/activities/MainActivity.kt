@@ -116,7 +116,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        finishAffinity()
+        if(homeVisible){
+            unRevealActivity()
+            finishAffinity()
+        }
+        loadHomeFragment()
     }
 
     override fun onResume() {

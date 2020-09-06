@@ -1,32 +1,17 @@
 package com.uawdevstudios.watchovermeandroid.services
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.app.AlarmManager
-import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.location.Geocoder
-import android.location.Location
-import android.os.Build
-import android.os.PowerManager
 import android.util.Log
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationServices
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.uawdevstudios.watchovermeandroid.R
 import com.uawdevstudios.watchovermeandroid.activities.MainActivity
 import com.uawdevstudios.watchovermeandroid.models.NotificationItem
-import com.uawdevstudios.watchovermeandroid.services.HelpMeService.Companion.HELP_ME_TRIGGER
-import kotlinx.android.synthetic.main.content_fragment_home.view.*
+import com.uawdevstudios.watchovermeandroid.receivers.LocationBroadcast
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -110,7 +95,7 @@ class FirebaseNotificationService : FirebaseMessagingService() {
 
         FileService(this).saveNotification(notification)
 
-        val i = Intent(applicationContext,LocationBroadcast::class.java)
+        val i = Intent(applicationContext, LocationBroadcast::class.java)
         i.putExtra("message",message.data["title"].toString())
         i.flags = Intent.FLAG_RECEIVER_FOREGROUND
         sendBroadcast(i)

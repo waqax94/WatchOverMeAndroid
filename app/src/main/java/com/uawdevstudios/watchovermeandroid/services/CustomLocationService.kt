@@ -84,8 +84,14 @@ class CustomLocationService : Service() {
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         Log.d(TAG, "onStartCommand: called.")
+        try {
+            mFusedLocationClient?.removeLocationUpdates(locationCallback)
+            Log.e("Service Destroy", "Service Destroyed")
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         location
-        return START_STICKY
+        return START_NOT_STICKY
     }
 
     private val location:
@@ -195,6 +201,7 @@ class CustomLocationService : Service() {
     override fun onDestroy() {
         try {
             mFusedLocationClient?.removeLocationUpdates(locationCallback)
+            Log.e("Service Destroy", "Service Destroyed")
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -223,6 +230,6 @@ class CustomLocationService : Service() {
     companion object {
         private const val TAG = "LocationService"
         private const val UPDATE_INTERVAL = 30 * 60 * 1000.toLong()
-        private const val FASTEST_INTERVAL: Long = 29 * 60 * 1000 /* 2 sec */
+        private const val FASTEST_INTERVAL: Long = 2 * 1000 /* 2 sec */
     }
 }

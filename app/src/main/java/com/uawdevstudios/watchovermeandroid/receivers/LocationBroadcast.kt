@@ -1,20 +1,18 @@
-package com.uawdevstudios.watchovermeandroid.services
+package com.uawdevstudios.watchovermeandroid.receivers
 
 import android.Manifest
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.icu.text.CaseMap
 import android.location.Geocoder
 import android.location.Location
 import android.util.Log
 import androidx.core.app.ActivityCompat
-import androidx.legacy.content.WakefulBroadcastReceiver
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.uawdevstudios.watchovermeandroid.services.APIService
+import com.uawdevstudios.watchovermeandroid.services.ServiceBuilder
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
