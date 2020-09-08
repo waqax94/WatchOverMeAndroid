@@ -230,6 +230,6 @@ class CustomLocationService : Service() {
     companion object {
         private const val TAG = "LocationService"
         private const val UPDATE_INTERVAL = 30 * 60 * 1000.toLong()
-        private const val FASTEST_INTERVAL: Long = 2 * 1000 /* 2 sec */
+        private const val FASTEST_INTERVAL: Long = 29 * 60 * 1000 /* 2 sec */
     }
 }
