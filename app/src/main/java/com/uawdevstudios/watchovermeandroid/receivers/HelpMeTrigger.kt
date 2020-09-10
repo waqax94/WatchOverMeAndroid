@@ -208,7 +208,7 @@ class HelpMeTrigger: BroadcastReceiver() {
                         HelpMeService.position++
                     } else {
                         if (smsStatus) {
-                            val smsText = "Hi " + watchers[pos].watcherFirstName + ", I need your help. Please follow the link to respond: \n" + responseLink
+                            val smsText = "Hi " + watchers[pos].watcherFirstName + ", ${HelpMeService.wearerFirstName} need your help. Please follow the link to respond: \n" + responseLink
                             try {
                                 val smsManager = SmsManager.getDefault();
                                 smsManager.sendTextMessage(watchers[pos].watcherPhone, null, smsText, null, null);
