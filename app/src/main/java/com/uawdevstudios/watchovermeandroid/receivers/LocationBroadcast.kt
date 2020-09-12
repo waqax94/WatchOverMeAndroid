@@ -50,7 +50,7 @@ class LocationBroadcast : BroadcastReceiver() {
         }
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
 
-            if (notificationTitle.substring(0, 8) != "Location") {
+            if (notificationTitle.substring(0, 8) != "Location" || serviceId == "") {
                 return@addOnSuccessListener
             }
 

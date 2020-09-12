@@ -137,7 +137,7 @@ class HelpMeTrigger: BroadcastReceiver() {
         val contactTime = HelpMeService.timeFormatter1.format(timeNow)
         val alertNum = HelpMeService.alertLogId.substring(3)
         val watcherIdNum = watchers[HelpMeService.position].watcherId?.substring(6)
-        val responseBaseLink = "http://watchoverme.uawdevstudios.com/hmr/"
+        val responseBaseLink = "http://watchoverme.uawdevstudios.com.au/hmr/"
         val responseLink = responseBaseLink + alertNum + contactDate + "/" + watcherIdNum + contactTime
 
         if (HelpMeService.cycle == 0) {
