@@ -18,11 +18,12 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
 
+
 class LocationBroadcast : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
 
-        val notificationTitle = intent.getStringExtra("message")!!
+         val notificationTitle = intent.getStringExtra("message")!!
 
         val fusedLocationClient =
             LocationServices.getFusedLocationProviderClient(context)
@@ -91,4 +92,5 @@ class LocationBroadcast : BroadcastReceiver() {
 
         return ""
     }
+
 }
