@@ -206,7 +206,7 @@ class HelpMeService : Service() {
 
                         sendBroadcast(Intent().setAction("HelpMeStatus"))
                         wakeLock?.acquire()
-                        HelpMeTrigger.schecduleExactAlarm(applicationContext,getSystemService(ALARM_SERVICE) as AlarmManager, 1)
+                        HelpMeTrigger.scheduleExactAlarm(applicationContext,getSystemService(ALARM_SERVICE) as AlarmManager, 1)
 
                     } else {
                         stopSelf()

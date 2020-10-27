@@ -117,7 +117,7 @@ class HelpMeTrigger: BroadcastReceiver() {
                 context.sendBroadcast(Intent().setAction("HelpMeStatus"))
                 val timeNow = Calendar.getInstance().time
                 HelpMeService.timeInitiated = HelpMeService.dateTimeFormatter.format(timeNow)
-                schecduleExactAlarm(context,context.getSystemService(Context.ALARM_SERVICE) as AlarmManager, 15 * 60)
+                scheduleExactAlarm(context,context.getSystemService(Context.ALARM_SERVICE) as AlarmManager, 15 * 60)
             }
 
         }
@@ -220,7 +220,7 @@ class HelpMeTrigger: BroadcastReceiver() {
                         }
                     }
 
-                    schecduleExactAlarm(context,context.getSystemService(Context.ALARM_SERVICE) as AlarmManager, 20)
+                    scheduleExactAlarm(context,context.getSystemService(Context.ALARM_SERVICE) as AlarmManager, 20)
 
                 } else {
 
@@ -244,7 +244,7 @@ class HelpMeTrigger: BroadcastReceiver() {
 
     companion object {
         const val HELP_ME_TRIGGER = "HelpMeTrigger"
-        fun schecduleExactAlarm(context: Context, alarmManager: AlarmManager, interval: Int){
+        fun scheduleExactAlarm(context: Context, alarmManager: AlarmManager, interval: Int){
             val c = Calendar.getInstance()
             c.add(Calendar.SECOND, interval)
             val timeAfter = c.timeInMillis

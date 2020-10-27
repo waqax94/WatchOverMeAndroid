@@ -16,7 +16,7 @@ class RebootReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
 
-        HelpMeTrigger.schecduleExactAlarm(
+        HelpMeTrigger.scheduleExactAlarm(
             context,
             context.getSystemService(Context.ALARM_SERVICE) as AlarmManager,
             5

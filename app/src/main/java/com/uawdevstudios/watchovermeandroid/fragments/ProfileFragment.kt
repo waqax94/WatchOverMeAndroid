@@ -70,7 +70,6 @@ class ProfileFragment : Fragment(), OnMapReadyCallback {
             .load(R.drawable.loading)
             .placeholder(R.drawable.loading)
             .centerCrop()
-            .crossFade()
             .into(dialogView.loadingIcon)
         progressDialogBuilder.setView(dialogView)
         progressDialogBuilder.setCancelable(false)

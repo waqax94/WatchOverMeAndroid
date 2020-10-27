@@ -22,7 +22,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.GlideDrawableImageViewTarget
+//import com.bumptech.glide.request.target.GlideDrawableImageViewTarget
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.Gson
 import com.google.gson.TypeAdapter
@@ -83,7 +83,6 @@ class LoginActivity : AppCompatActivity() {
             .load(R.drawable.loading)
             .placeholder(R.drawable.loading)
             .centerCrop()
-            .crossFade()
             .into(dialogView.loadingIcon)
         progressDialogBuilder.setView(dialogView)
         progressDialogBuilder.setCancelable(false)
